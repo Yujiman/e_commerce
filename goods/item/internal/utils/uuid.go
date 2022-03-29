@@ -14,6 +14,5 @@ func CheckUuid(ids ...string) error {
 }
 
 func GenerateUuid() uuid.UUID {
-	newUuid, _ := uuid.NewV4()
-	return uuid.Must(newUuid, nil)
+	return uuid.Must(uuid.NewV4(), nil)
 }

@@ -4,6 +4,10 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/Yujiman/e_commerce/goods/item/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	pb "github.com/Yujiman/e_commerce/goods/item/internal/proto/item"
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db"
 	itemModel "github.com/Yujiman/e_commerce/goods/item/internal/storage/db/model/item"
@@ -47,8 +51,14 @@ func Handle(ctx context.Context, request *pb.RemoveRequest) (*pb.UUID, error) {
 	return &pb.UUID{Value: request.ItemId}, nil
 }
 
-func validate(request *pb.RemoveRequest) error {
-	//TODO
+func validate(req *pb.RemoveRequest) error {
+	if req.ItemId == "" {
+		return status.Error(codes.Code(400), "item_id not be empty.")
+	}
+
+	if err := utils.CheckUuid(req.ItemId); err != nil {
+		return status.Error(codes.Code(400), "item_id must be uuid type.")
+	}
 
 	return nil
 }

@@ -3,6 +3,8 @@ package item
 import (
 	"context"
 	"database/sql"
+	"strings"
+
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db"
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/item/internal/utils"
@@ -12,8 +14,11 @@ import (
 )
 
 type FindDTO struct {
-	// TODO Fill!
-	//Delivery        *bool
+	Brand       *string  `db:"brand"`
+	Name        *string  `db:"name"`
+	Description *string  `db:"description"`
+	Price       *float64 `db:"price"`
+	CategoryId  *string  `db:"category_id"`
 }
 
 type Repository struct {
@@ -133,22 +138,31 @@ func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset ui
 }
 
 func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuilder {
-	// TODO Fill!
-	//if dto.CityId.String() != "" { // Equal
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("city_id = :city_id").
-	//		SetParameter(":city_id", dto.CityId)
-	//}
-	//if dto.ViewName != "" { // Like
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("LOWER(view_name) LIKE :view_name").
-	//		SetParameter(":view_name", "%"+strings.ToLower(dto.ViewName)+"%")
-	//}
-	//if dto.Delivery != nil { // Nullable
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("delivery = :delivery").
-	//		SetParameter(":delivery", *dto.Delivery)
-	//}
+	if dto.Brand != nil {
+		queryBuilder = queryBuilder.
+			OrWhere("brand = :brand").
+			SetParameter(":brand", dto.Brand)
+	}
+	if dto.Name != nil { // Like
+		queryBuilder = queryBuilder.
+			OrWhere("LOWER(name) LIKE :name").
+			SetParameter(":name", "%"+strings.ToLower(*dto.Name)+"%")
+	}
+	if dto.Description != nil { // Like
+		queryBuilder = queryBuilder.
+			OrWhere("LOWER(description) LIKE :description").
+			SetParameter(":description", "%"+strings.ToLower(*dto.Description)+"%")
+	}
+	if dto.Price != nil {
+		queryBuilder = queryBuilder.
+			OrWhere("price = :price").
+			SetParameter(":price", dto.Price)
+	}
+	if dto.CategoryId != nil {
+		queryBuilder = queryBuilder.
+			OrWhere("category_id = :category_id").
+			SetParameter(":category_id", dto.CategoryId)
+	}
 
 	return queryBuilder
 }

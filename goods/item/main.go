@@ -7,9 +7,8 @@ import (
 
 func init() {
 	bootstrap.InitConfig()
-	bootstrap.InitMetrics()
 	bootstrap.PingDbConnect()
-	bootstrap.Migrate("./storage/db/migration/")
+	bootstrap.Migrate("./internal/storage/db/migration/")
 }
 
 func main() {

@@ -2,6 +2,8 @@ package item
 
 import (
 	"context"
+	"time"
+
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db"
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db/model/types"
 
@@ -10,7 +12,15 @@ import (
 )
 
 type Item struct {
-	Id types.UuidType `db:"id"`
+	Id          types.UuidType `db:"id"`
+	CreatedAt   time.Time      `db:"created_at"`
+	UpdatedAt   time.Time      `db:"updated_at"`
+	Brand       string         `db:"brand"`
+	Name        string         `db:"name"`
+	Description string         `db:"description"`
+	ImageLink   string         `db:"image_link"`
+	Price       float64        `db:"price"`
+	CategoryId  types.UuidType `db:"category_id"`
 }
 
 func (item *Item) isRequiredEmpty() bool {
@@ -29,8 +39,8 @@ func (item *Item) Add(ctx context.Context, tr *db.Transaction) (err error) {
 	item.UpdatedAt = item.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO item(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO item(id, created_at, updated_at, category_id, brand, name, description, image_link, price)
+			 VALUES(:id, :created_at, :updated_at, :category_id, :brand, :name, :description, :image_link, :price);`
 
 	return tr.PersistNamedCtx(ctx, query, item)
 }
@@ -40,20 +50,6 @@ func (item *Item) Remove(ctx context.Context, tr *db.Transaction) (err error) {
 
 	// language=PostgreSQL
 	return tr.PersistNamedCtx(ctx, `DELETE FROM item WHERE id=:id;`, item)
-}
-
-func (item *Item) ChangeLOREM(ctx context.Context, tr *db.Transaction, LOREM string) (err error) {
-	defer rollbackIfError(tr, &err)
-
-	if item.LOREM == LOREM {
-		return status.Error(codes.Code(409), "LOREM already same.")
-	}
-
-	item.LOREM = LOREM
-
-	// language=PostgreSQL
-	query := `UPDATE item SET LOREM = :LOREM WHERE id = :id;`
-	return tr.PersistNamedCtx(ctx, query, item)
 }
 
 func (item *Item) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date time.Time) (err error) {

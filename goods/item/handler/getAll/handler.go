@@ -3,7 +3,7 @@ package getAll
 import (
 	"context"
 
-	"github.com/Yujiman/e_commerce/goods/item/internal/handler"
+	"github.com/Yujiman/e_commerce/goods/item/handler"
 	pb "github.com/Yujiman/e_commerce/goods/item/internal/proto/item"
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db/model/item"
 	"github.com/Yujiman/e_commerce/goods/item/internal/utils"
@@ -37,17 +37,15 @@ func Handle(ctx context.Context, request *pb.GetAllRequest) (*pb.Items, error) {
 	pager := utils.NewPagination(p, perPage, offset, countAll)
 
 	// Getting all...
-	itemItems, err := repository.GetAll(ctx, pager.PerPage(), pager.Offset())
+	items, err := repository.GetAll(ctx, pager.PerPage(), pager.Offset())
 	if err != nil {
 		return nil, err
 	}
-
-	items := handler.ConvItemsToProto(itemItems)
 
 	return &pb.Items{
 		PagesCount: pager.GetPagesCount(),
 		TotalItems: countAll,
 		PerPage:    pager.PerPage(),
-		Items:      items,
+		Items:      handler.ConvItemsToProto(items),
 	}, nil
 }

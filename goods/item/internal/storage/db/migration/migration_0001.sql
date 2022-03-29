@@ -1,9 +1,9 @@
-create table if not exists "item"
+create table if not exists "group"
 (
     id uuid
-        constraint item_pk
+        constraint group_pk
             primary key,
     created_at          timestamp(6) NOT NULL,
     updated_at          timestamp(6) NOT NULL,
---  TODO Fill!
+    "name" varchar(255) not null
 );

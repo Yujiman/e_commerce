@@ -1,21 +1,16 @@
 package config
 
 import (
-	"github.com/Yujiman/e_commerce/goods/item/internal/utils"
 	"log"
 	"sync"
+
+	"github.com/Yujiman/e_commerce/goods/item/internal/utils"
 )
 
 var onceConf sync.Once
 var config *Config
 
 type Config struct {
-	MetricsParams struct {
-		MetricServerAddress string `env:"METRIC_SERVER_ADDRESS"`
-		MetricServerPort    string `env:"METRIC_SERVER_PORT"`
-		MetricAppName       string `env:"METRIC_APP_NAME"`
-		MetricTimeout       string `env:"METRIC_TIMEOUT"`
-	}
 	PostgreConnectionParams struct {
 		Host     string `env:"POSTGRES_HOST"`
 		Port     string `env:"POSTGRES_PORT"`
