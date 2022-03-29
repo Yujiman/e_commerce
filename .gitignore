@@ -1,0 +1,4 @@
+.idea/
+local-test/
+.env
+docker-compose-resources-dev.yml
