@@ -1,9 +1,8 @@
-package add
+package remove
 
 import (
 	"context"
 	"database/sql"
-	"time"
 
 	pb "github.com/Yujiman/e_commerce/goods/group/internal/proto/group"
 	"github.com/Yujiman/e_commerce/goods/group/internal/storage/db"
@@ -12,45 +11,53 @@ import (
 	"github.com/Yujiman/e_commerce/goods/group/internal/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	_ "google.golang.org/grpc/status"
 )
 
-func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
+func Handle(ctx context.Context, req *pb.RemoveRequest) (*pb.UUID, error) {
 	// Validation
 	if err := validate(req); err != nil {
 		return nil, err
 	}
 
-	//Creating
-	newId, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
-	createdAt := time.Now()
-	newGroup := groupModel.Group{
-		Id:        *newId,
-		CreatedAt: createdAt,
-		UpdatedAt: createdAt,
-		Name:      req.Name,
+	id, err := types.NewUuidType(req.GroupId, false)
+	if err != nil {
+		return nil, err
 	}
 
-	// Adding...
+	// Getting Entity
+	repository := groupModel.NewGroupRepository()
+
+	group, err := repository.GetById(ctx, *id)
+	if err != nil {
+		return nil, err
+	}
+
+	// Removing...
 	tr, err := db.NewTransaction(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {
 		return nil, err
 	}
 
-	if err = newGroup.Add(ctx, tr); err != nil {
+	err = group.Remove(ctx, tr)
+	if err != nil {
 		return nil, err
 	}
 
 	if err = tr.Flush(); err != nil {
 		return nil, err
 	}
-
-	return &pb.UUID{Value: newId.String()}, nil
+	return &pb.UUID{Value: req.GroupId}, nil
 }
 
-func validate(req *pb.AddRequest) error {
-	if req.Name == "" {
-		return status.Error(codes.Code(400), "name can't be empty.")
+func validate(req *pb.RemoveRequest) error {
+
+	if req.GroupId == "" {
+		return status.Error(codes.Code(400), "group_id can't be empty.")
 	}
 
+	if err := utils.CheckUuid(req.GroupId); err != nil {
+		return err
+	}
 	return nil
 }

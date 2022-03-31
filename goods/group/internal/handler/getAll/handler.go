@@ -56,7 +56,10 @@ func convertGroupsToProto(groups []*group.Group) []*pb.Group {
 
 	for _, item := range groups {
 		preparedGroup := pb.Group{
-			// TODO fill!
+			Id:        item.Id.String(),
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			Name:      item.Name,
 		}
 
 		result = append(result, &preparedGroup)

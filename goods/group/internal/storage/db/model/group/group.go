@@ -19,7 +19,7 @@ type Group struct {
 }
 
 func (group *Group) isRequiredEmpty() bool {
-	return group.Id.String() == "" // TODO Add your checking values ...
+	return group.Id.String() == "" || group.Name == ""
 }
 
 func (group *Group) Add(ctx context.Context, tr *db.Transaction) (err error) {

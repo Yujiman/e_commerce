@@ -8,7 +8,7 @@ service GroupService {
     rpc Add (AddRequest) returns (UUID);
     rpc Find (FindRequest) returns (Groups);
     rpc GetAll (GetAllRequest) returns (Groups);
-    rpc Remove (RemoveRequest) returns (Empty);
+    rpc Remove (RemoveRequest) returns (UUID);
 }
 
 // Entities:

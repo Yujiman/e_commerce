@@ -25,7 +25,7 @@ type GroupServiceClient interface {
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*UUID, error)
 	Find(ctx context.Context, in *FindRequest, opts ...grpc.CallOption) (*Groups, error)
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*Groups, error)
-	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*Empty, error)
+	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*UUID, error)
 }
 
 type groupServiceClient struct {
@@ -63,8 +63,8 @@ func (c *groupServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts
 	return out, nil
 }
 
-func (c *groupServiceClient) Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *groupServiceClient) Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*UUID, error) {
+	out := new(UUID)
 	err := c.cc.Invoke(ctx, "/group.GroupService/Remove", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ type GroupServiceServer interface {
 	Add(context.Context, *AddRequest) (*UUID, error)
 	Find(context.Context, *FindRequest) (*Groups, error)
 	GetAll(context.Context, *GetAllRequest) (*Groups, error)
-	Remove(context.Context, *RemoveRequest) (*Empty, error)
+	Remove(context.Context, *RemoveRequest) (*UUID, error)
 	mustEmbedUnimplementedGroupServiceServer()
 }
 
@@ -96,7 +96,7 @@ func (UnimplementedGroupServiceServer) Find(context.Context, *FindRequest) (*Gro
 func (UnimplementedGroupServiceServer) GetAll(context.Context, *GetAllRequest) (*Groups, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
-func (UnimplementedGroupServiceServer) Remove(context.Context, *RemoveRequest) (*Empty, error) {
+func (UnimplementedGroupServiceServer) Remove(context.Context, *RemoveRequest) (*UUID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
 func (UnimplementedGroupServiceServer) mustEmbedUnimplementedGroupServiceServer() {}
