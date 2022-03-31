@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/Yujiman/e_commerce/goods/item/internal/bootstrap"
-	"github.com/Yujiman/e_commerce/goods/item/server"
+	"github.com/Yujiman/e_commerce/goods/item/internal/server"
 )
 
 func init() {

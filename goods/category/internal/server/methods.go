@@ -3,10 +3,10 @@ package server
 import (
 	"context"
 
-	"github.com/Yujiman/e_commerce/goods/category/handler/add"
-	"github.com/Yujiman/e_commerce/goods/category/handler/find"
-	"github.com/Yujiman/e_commerce/goods/category/handler/getAll"
-	"github.com/Yujiman/e_commerce/goods/category/handler/remove"
+	"github.com/Yujiman/e_commerce/goods/category/internal/handler/add"
+	"github.com/Yujiman/e_commerce/goods/category/internal/handler/find"
+	"github.com/Yujiman/e_commerce/goods/category/internal/handler/getAll"
+	"github.com/Yujiman/e_commerce/goods/category/internal/handler/remove"
 	pb "github.com/Yujiman/e_commerce/goods/category/internal/proto/category"
 )
 

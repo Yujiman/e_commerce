@@ -3,7 +3,7 @@ package getAll
 import (
 	"context"
 
-	"github.com/Yujiman/e_commerce/goods/item/handler"
+	"github.com/Yujiman/e_commerce/goods/item/internal/handler"
 	pb "github.com/Yujiman/e_commerce/goods/item/internal/proto/item"
 	"github.com/Yujiman/e_commerce/goods/item/internal/storage/db/model/item"
 	"github.com/Yujiman/e_commerce/goods/item/internal/utils"

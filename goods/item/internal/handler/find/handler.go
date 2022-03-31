@@ -3,7 +3,7 @@ package find
 import (
 	"context"
 
-	"github.com/Yujiman/e_commerce/goods/item/handler"
+	"github.com/Yujiman/e_commerce/goods/item/internal/handler"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
