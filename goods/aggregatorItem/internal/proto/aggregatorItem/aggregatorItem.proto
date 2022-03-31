@@ -5,7 +5,6 @@ package aggregatorItem;
 option go_package = "/;aggregatorItem";
 
 service AggregatorItemService {
-  rpc GetItemsByGroupItem (GetItemsByGroupItemRequest) returns (Items);
   rpc GetItemsByCategoryItem (GetItemsByCategoryItemRequest) returns (Items);
 }
 

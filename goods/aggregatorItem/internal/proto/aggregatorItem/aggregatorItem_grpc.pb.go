@@ -22,7 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AggregatorItemServiceClient interface {
-	GetItemsByGroupItem(ctx context.Context, in *GetItemsByGroupItemRequest, opts ...grpc.CallOption) (*Items, error)
 	GetItemsByCategoryItem(ctx context.Context, in *GetItemsByCategoryItemRequest, opts ...grpc.CallOption) (*Items, error)
 }
 
@@ -32,15 +31,6 @@ type aggregatorItemServiceClient struct {
 
 func NewAggregatorItemServiceClient(cc grpc.ClientConnInterface) AggregatorItemServiceClient {
 	return &aggregatorItemServiceClient{cc}
-}
-
-func (c *aggregatorItemServiceClient) GetItemsByGroupItem(ctx context.Context, in *GetItemsByGroupItemRequest, opts ...grpc.CallOption) (*Items, error) {
-	out := new(Items)
-	err := c.cc.Invoke(ctx, "/aggregatorItem.AggregatorItemService/GetItemsByGroupItem", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *aggregatorItemServiceClient) GetItemsByCategoryItem(ctx context.Context, in *GetItemsByCategoryItemRequest, opts ...grpc.CallOption) (*Items, error) {
@@ -56,7 +46,6 @@ func (c *aggregatorItemServiceClient) GetItemsByCategoryItem(ctx context.Context
 // All implementations must embed UnimplementedAggregatorItemServiceServer
 // for forward compatibility
 type AggregatorItemServiceServer interface {
-	GetItemsByGroupItem(context.Context, *GetItemsByGroupItemRequest) (*Items, error)
 	GetItemsByCategoryItem(context.Context, *GetItemsByCategoryItemRequest) (*Items, error)
 	mustEmbedUnimplementedAggregatorItemServiceServer()
 }
@@ -65,9 +54,6 @@ type AggregatorItemServiceServer interface {
 type UnimplementedAggregatorItemServiceServer struct {
 }
 
-func (UnimplementedAggregatorItemServiceServer) GetItemsByGroupItem(context.Context, *GetItemsByGroupItemRequest) (*Items, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetItemsByGroupItem not implemented")
-}
 func (UnimplementedAggregatorItemServiceServer) GetItemsByCategoryItem(context.Context, *GetItemsByCategoryItemRequest) (*Items, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetItemsByCategoryItem not implemented")
 }
@@ -82,24 +68,6 @@ type UnsafeAggregatorItemServiceServer interface {
 
 func RegisterAggregatorItemServiceServer(s grpc.ServiceRegistrar, srv AggregatorItemServiceServer) {
 	s.RegisterService(&AggregatorItemService_ServiceDesc, srv)
-}
-
-func _AggregatorItemService_GetItemsByGroupItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetItemsByGroupItemRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AggregatorItemServiceServer).GetItemsByGroupItem(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/aggregatorItem.AggregatorItemService/GetItemsByGroupItem",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AggregatorItemServiceServer).GetItemsByGroupItem(ctx, req.(*GetItemsByGroupItemRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _AggregatorItemService_GetItemsByCategoryItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -127,10 +95,6 @@ var AggregatorItemService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "aggregatorItem.AggregatorItemService",
 	HandlerType: (*AggregatorItemServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetItemsByGroupItem",
-			Handler:    _AggregatorItemService_GetItemsByGroupItem_Handler,
-		},
 		{
 			MethodName: "GetItemsByCategoryItem",
 			Handler:    _AggregatorItemService_GetItemsByCategoryItem_Handler,
