@@ -6,7 +6,7 @@ create table if not exists "order_items"
     created_at          timestamp(6) NOT NULL,
     updated_at          timestamp(6) NOT NULL,
     quantity int not null,
-    price int not null,
+    price float8 not null,
 
     order_id uuid not null,
 
