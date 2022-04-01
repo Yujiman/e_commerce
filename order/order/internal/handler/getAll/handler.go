@@ -57,10 +57,10 @@ func convertOrdersToProto(orders []*order.Order) []*pb.Order {
 	for _, item := range orders {
 		preparedOrder := pb.Order{
 			Id:        item.Id.String(),
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			ClientId:  "",
-			Status:    "",
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			ClientId:  item.ClientId.String(),
+			Status:    item.Status.String(),
 		}
 
 		result = append(result, &preparedOrder)

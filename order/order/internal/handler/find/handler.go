@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/Yujiman/e_commerce/goods/order/order/internal/proto/order"
 	orderModel "github.com/Yujiman/e_commerce/goods/order/order/internal/storage/db/model/order"
+	"github.com/Yujiman/e_commerce/goods/order/order/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/order/order/internal/utils"
 )
 
@@ -39,17 +40,21 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Orders, error) {
 	pager := utils.NewPagination(p, perPage, offset, countAll)
 
 	// Find...
-	_, err = repository.Find(ctx, dto, pager.PerPage(), pager.Offset())
+	orderItems, err := repository.Find(ctx, dto, pager.PerPage(), pager.Offset())
 	if err != nil {
 		return nil, err
 	}
 
 	var orders []*pb.Order
-	//for _, item := range orderItems {
-	//	orders = append(orders, &pb.Order{
-	//		// TODO fill!
-	//	})
-	//}
+	for _, item := range orderItems {
+		orders = append(orders, &pb.Order{
+			Id:        item.Id.String(),
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			ClientId:  item.ClientId.String(),
+			Status:    item.Status.String(),
+		})
+	}
 
 	return &pb.Orders{
 		PagesCount: pager.GetPagesCount(),
@@ -59,14 +64,27 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Orders, error) {
 	}, nil
 }
 
-func bindDTO(request *pb.FindRequest) *orderModel.FindDTO {
-	//var delivery *bool
-	//if request.Delivery != nil {
-	//	delivery = &request.Delivery.Value
-	//}
+func bindDTO(req *pb.FindRequest) *orderModel.FindDTO {
+	dto := &orderModel.FindDTO{}
 
-	return &orderModel.FindDTO{
-		// TODO Fill!
-		//Delivery:        delivery,
+	if req.Status != nil {
+		statusType, _ := types.NewStatusType(req.Status.String(), false)
+		dto.Status = statusType
 	}
+
+	if req.ClientId != "" {
+		id, _ := types.NewUuidType(req.ClientId, false)
+		dto.ClientId = id
+	}
+
+	if req.OrderNumber != 0 {
+		dto.OrderNumber = req.OrderNumber
+	}
+
+	if req.OrderId != "" {
+		id, _ := types.NewUuidType(req.OrderId, false)
+		dto.OrderId = id
+	}
+
+	return dto
 }

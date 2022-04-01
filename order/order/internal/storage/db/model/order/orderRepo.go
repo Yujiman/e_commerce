@@ -14,8 +14,11 @@ import (
 )
 
 type FindDTO struct {
-	// TODO Fill!
-	//Delivery        *bool
+	OrderId     *types.UuidType
+	ClientId    *types.UuidType
+	Status      *types.StatusType
+	OrderNumber int64
+	IsPayed     *bool
 }
 
 type Repository struct {
@@ -35,7 +38,7 @@ func (repo *Repository) GetAll(ctx context.Context, limit, offset uint32) ([]*Or
 		sqlLimit = sql.NullInt32{Int32: int32(limit), Valid: true}
 	}
 
-	query := `SELECT * FROM order ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
+	query := `SELECT * FROM "order" ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
 
 	err := repo.DbCon.SelectContext(ctx, &orders, query, sqlLimit, offset)
 	switch err {
@@ -50,7 +53,7 @@ func (repo *Repository) GetAll(ctx context.Context, limit, offset uint32) ([]*Or
 func (repo *Repository) GetCountAll(ctx context.Context) (uint32, error) {
 	var count uint32
 
-	query := `SELECT COUNT(*) FROM order;`
+	query := `SELECT COUNT(*) FROM "order";`
 
 	err := repo.DbCon.GetContext(ctx, &count, query)
 	if err != nil {
@@ -63,7 +66,7 @@ func (repo *Repository) GetCountAll(ctx context.Context) (uint32, error) {
 func (repo *Repository) GetCountAllForFind(ctx context.Context, dto *FindDTO) (uint32, error) {
 
 	// Prepare QUERY
-	queryBuilder := db.NewQueryBuilder("order").
+	queryBuilder := db.NewQueryBuilder("\"order\"").
 		Select("COUNT(id)")
 
 	queryBuilder = fillQueryForFind(queryBuilder, dto)
@@ -83,7 +86,7 @@ func (repo *Repository) GetCountAllForFind(ctx context.Context, dto *FindDTO) (u
 func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*Order, error) {
 	order := &Order{}
 
-	query := `SELECT * FROM order WHERE id = $1;`
+	query := `SELECT * FROM "order" WHERE id = $1;`
 
 	err := repo.DbCon.GetContext(ctx, order, query, id)
 	switch err {
@@ -100,7 +103,7 @@ func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*Order,
 func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, error) {
 	var has bool
 
-	query := `SELECT EXISTS(SELECT 1 FROM order WHERE id = $1);`
+	query := `SELECT EXISTS(SELECT 1 FROM "order" WHERE id = $1);`
 
 	err := repo.DbCon.GetContext(ctx, &has, query, id)
 	if err != nil {
@@ -113,7 +116,7 @@ func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, e
 func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset uint32) ([]*Order, error) {
 
 	// Prepare QUERY
-	queryBuilder := db.NewQueryBuilder("order").
+	queryBuilder := db.NewQueryBuilder("\"order\"").
 		Limit(limit).
 		Offset(offset).
 		OrderBy("created_at", "DESC")
@@ -135,22 +138,32 @@ func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset ui
 }
 
 func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuilder {
-	// TODO Fill!
-	//if dto.CityId.String() != "" { // Equal
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("city_id = :city_id").
-	//		SetParameter(":city_id", dto.CityId)
-	//}
-	//if dto.ViewName != "" { // Like
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("LOWER(view_name) LIKE :view_name").
-	//		SetParameter(":view_name", "%"+strings.ToLower(dto.ViewName)+"%")
-	//}
-	//if dto.Delivery != nil { // Nullable
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("delivery = :delivery").
-	//		SetParameter(":delivery", *dto.Delivery)
-	//}
+	if dto.ClientId != nil { // Equal
+		queryBuilder = queryBuilder.
+			OrWhere("client_id = :client_id").
+			SetParameter(":client_id", dto.ClientId)
+	}
+	if dto.Status != nil { // Equal
+		queryBuilder = queryBuilder.
+			OrWhere("status = :status").
+			SetParameter(":status", dto.Status)
+	}
+	if dto.OrderNumber != 0 { // Equal
+		queryBuilder = queryBuilder.
+			OrWhere("order_number = :order_number").
+			SetParameter(":order_number", dto.OrderNumber)
+	}
 
+	if dto.IsPayed != nil { // Nullable
+		queryBuilder = queryBuilder.
+			OrWhere("is_payed = :is_payed").
+			SetParameter(":is_payed", *dto.IsPayed)
+	}
+	if dto.IsPayed != nil { // Nullable
+		queryBuilder = queryBuilder.
+			OrWhere("is_payed = :is_payed").
+			SetParameter(":is_payed", *dto.IsPayed)
+
+	}
 	return queryBuilder
 }

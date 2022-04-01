@@ -3,26 +3,39 @@ package add
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	pb "github.com/Yujiman/e_commerce/goods/order/order/internal/proto/order"
 	"github.com/Yujiman/e_commerce/goods/order/order/internal/storage/db"
 	orderModel "github.com/Yujiman/e_commerce/goods/order/order/internal/storage/db/model/order"
 	"github.com/Yujiman/e_commerce/goods/order/order/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/order/order/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
-func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
+func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
 	// Validation
-	if err := validate(request); err != nil {
+	if err := validate(req); err != nil {
 		return nil, err
 	}
 
 	//Creating
 	newId, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
+	createAt := time.Now()
 
-	//createdAt := time.Now()
+	clientId, _ := types.NewUuidType(req.ClientId, false)
+	createAt = time.Now()
+
+	orderStatus, err := types.NewStatusType(req.Status.Value.String(), false)
+	isPayed := false
 	newOrder := orderModel.Order{
-		// TODO fill!
+		Id:        *newId,
+		CreatedAt: createAt,
+		UpdatedAt: createAt,
+		ClientId:  *clientId,
+		Status:    *orderStatus,
+		IsPayed:   &isPayed,
 	}
 
 	// Adding...
@@ -43,14 +56,21 @@ func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 }
 
 func validate(req *pb.AddRequest) error {
-	// TODO Validate!
-	//if req.LOREM_ID == "" {
-	//	return status.Error(codes.Code(400), "LOREM_ID value is empty.")
-	//}
-	//
-	//if err := utils.CheckUuid(req.LOREM_ID); err != nil {
-	//	return status.Error(codes.Code(400), "LOREM_ID must be UUID type.")
-	//}
+	if req.ClientId == "" {
+		return status.Error(codes.Code(400), "client_id value is empty.")
+	}
+
+	if err := utils.CheckUuid(req.ClientId); err != nil {
+		return status.Error(codes.Code(400), "client_id must be UUID type.")
+	}
+
+	if req.Status == nil {
+		return status.Error(codes.Code(400), "status can't be empty.")
+	}
+
+	if !types.IsStatusType(req.Status.Value.String()) {
+		return status.Error(codes.Code(400), "status not found.")
+	}
 
 	return nil
 }

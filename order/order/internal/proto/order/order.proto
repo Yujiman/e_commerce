@@ -28,12 +28,17 @@ message Orders {
     repeated Order orders = 4;
 }
 
-enum Status {
-    NEW = 0;
-    IN_PROGRESS = 1;
-    IN_POINT = 2;
-    ISSUED = 3;
+message Status{
+    enum Status {
+        NEW = 0;
+        IN_PROGRESS = 1;
+        IN_POINT = 2;
+        ISSUED = 3;
+    }
+
+    Status value = 1;
 }
+
 
 message IsPayed{
     bool value =1;
@@ -61,6 +66,7 @@ message AddRequest {
 }
 
 message UpdateRequest {
+
     string order_id = 1;
     Status status = 2;
     IsPayed is_payed = 3;

@@ -12,17 +12,18 @@ import (
 )
 
 type Order struct {
-	Id          types.UuidType `db:"id"`
-	CreatedAt   time.Time      `db:"created_at"`
-	UpdatedAt   time.Time      `db:"updated_at"`
-	ClientId    types.UuidType `db:"client_id"`
-	Status      string         `db:"status"`
-	OrderNumber int64          `db:"order_number"`
-	IsPayed     bool           `db:"is_payed"`
+	Id          types.UuidType   `db:"id"`
+	CreatedAt   time.Time        `db:"created_at"`
+	UpdatedAt   time.Time        `db:"updated_at"`
+	ClientId    types.UuidType   `db:"client_id"`
+	Status      types.StatusType `db:"status"`
+	OrderNumber int64            `db:"order_number"`
+	IsPayed     *bool            `db:"is_payed"`
 }
 
 func (order *Order) isRequiredEmpty() bool {
-	return order.Id.String() == "" // TODO Add your checking values ...
+	return order.Id.String() == "" || order.ClientId.String() == "" || order.Status.String() == "" ||
+		order.IsPayed == nil
 }
 
 func (order *Order) Add(ctx context.Context, tr *db.Transaction) (err error) {
@@ -37,8 +38,8 @@ func (order *Order) Add(ctx context.Context, tr *db.Transaction) (err error) {
 	order.UpdatedAt = order.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO order(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO "order"(id, created_at, updated_at, client_id, status, is_payed)
+			 VALUES(:id, :created_at, :updated_at, :client_id, :status, :is_payed);`
 
 	return tr.PersistNamedCtx(ctx, query, order)
 }
@@ -50,19 +51,33 @@ func (order *Order) Remove(ctx context.Context, tr *db.Transaction) (err error) 
 	return tr.PersistNamedCtx(ctx, `DELETE FROM "order" WHERE id=:id;`, order)
 }
 
-//func (order *Order) ChangeLOREM(ctx context.Context, tr *db.Transaction, LOREM string) (err error) {
-//	defer rollbackIfError(tr, &err)
-//
-//	if order.LOREM == LOREM {
-//		return status.Error(codes.Code(409), "LOREM already same.")
-//	}
-//
-//	order.LOREM = LOREM
-//
-//	// language=PostgreSQL
-//	query := `UPDATE order SET LOREM = :LOREM WHERE id = :id;`
-//	return tr.PersistNamedCtx(ctx, query, order)
-//}
+func (order *Order) ChangeStatus(ctx context.Context, tr *db.Transaction, orderStatus types.StatusType) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if order.Status.IsEqualTo(orderStatus) {
+		return status.Error(codes.Code(409), "status already same.")
+	}
+
+	order.Status = orderStatus
+
+	// language=PostgreSQL
+	query := `UPDATE "order" SET status = :status WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, order)
+}
+
+func (order *Order) ChangeIsPayed(ctx context.Context, tr *db.Transaction, isPayed bool) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if *order.IsPayed == isPayed {
+		return status.Error(codes.Code(409), "is_payed status already same.")
+	}
+
+	order.IsPayed = &isPayed
+
+	// language=PostgreSQL
+	query := `UPDATE "order" SET is_payed = :is_payed WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, order)
+}
 
 func (order *Order) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date time.Time) (err error) {
 	defer rollbackIfError(tr, &err)
