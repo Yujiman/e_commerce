@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "/;order";
+
+service OrderService {
+    rpc GetAll (GetAllRequest) returns (Orders);
+    rpc Find (FindRequest) returns (Orders);
+    rpc Add (AddRequest) returns (UUID);
+    rpc Update (UpdateRequest) returns (UUID);
+}
+
+// Entities:
+message Order {
+    string id = 1;
+    int64 created_at = 2;
+    int64 updated_at = 3;
+    string client_id = 4;
+    string status = 5;
+
+}
+
+message Orders {
+    uint32 pages_count = 1;
+    uint32 total_items = 2;
+    uint32 per_page = 3;
+    repeated Order orders = 4;
+}
+
+message Status{
+    enum Status {
+        NEW = 0;
+        IN_PROGRESS = 1;
+        IN_POINT = 2;
+        ISSUED = 3;
+    }
+
+    Status value = 1;
+}
+
+
+message IsPayed{
+    bool value =1;
+}
+
+//Request
+message GetAllRequest {
+    PaginationRequest pagination = 1;
+}
+
+message FindRequest {
+    PaginationRequest pagination = 6;
+
+    string client_id = 1;
+    Status status = 2;
+    int64 order_number = 3;
+    IsPayed is_payed = 4;
+
+    string order_id =5;
+}
+
+message AddRequest {
+    string client_id = 1;
+    Status status = 2;
+}
+
+message UpdateRequest {
+
+    string order_id = 1;
+    Status status = 2;
+    IsPayed is_payed = 3;
+}
+
+
+// Base
+message UUID {
+    string value = 1;
+}
+
+
+message PaginationRequest {
+    uint32 page = 1;
+    int32 limit = 2;
+    uint32 offset = 3;
+}

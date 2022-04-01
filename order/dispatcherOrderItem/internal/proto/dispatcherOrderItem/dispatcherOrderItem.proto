@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package dispatcherOrderItem;
+
+option go_package = "/;dispatcherOrderItem";
+
+service DispatcherOrderItemService {
+  rpc CreateOrder (CreateOrderRequest) returns (UUID);
+  rpc PutItems (PutItemsRequest) returns (UUID);
+
+}
+
+//Entity
+message OrderItem{
+  int64 quantity = 1;
+  double price =2;
+
+}
+// OrderItem
+message CreateOrderRequest {
+  repeated OrderItem items = 1;
+  string client_id =2;
+}
+
+message PutItemsRequest {
+  string order_id = 1;
+  repeated OrderItem items = 2;
+}
+
+
+// Base
+message UUID {
+  string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+  bool value = 1;
+}
+
+message PaginationRequest {
+  uint32 page = 1;
+  int32 limit = 2;
+  uint32 offset = 3;
+}
