@@ -9,6 +9,9 @@ import (
 	orderItemModel "github.com/Yujiman/e_commerce/goods/order/orderItem/internal/storage/db/model/orderItem"
 	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/utils"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
@@ -40,14 +43,18 @@ func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 }
 
 func validate(req *pb.AddRequest) error {
-	// TODO Validate!
-	//if req.LOREM_ID == "" {
-	//	return status.Error(codes.Code(400), "LOREM_ID value is empty.")
-	//}
-	//
-	//if err := utils.CheckUuid(req.LOREM_ID); err != nil {
-	//	return status.Error(codes.Code(400), "LOREM_ID must be UUID type.")
-	//}
+	if req.Price == 0 {
+		return status.Error(codes.Code(400), "price can't be empty.")
+	}
+	if req.Quantity == 0 {
+		return status.Error(codes.Code(400), "quantity can't be empty.")
+	}
+	if req.OrderId == "" {
+		return status.Error(codes.Code(400), "order_id can't be empty.")
+	}
 
+	if err := utils.CheckUuid(req.OrderId); err != nil {
+		return status.Error(codes.Code(400), "order_id must be uuid type.")
+	}
 	return nil
 }

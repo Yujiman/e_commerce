@@ -4,21 +4,22 @@ import (
 	"context"
 
 	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/handler/add"
+	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/handler/find"
+	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/handler/getAll"
+	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/handler/update"
 	pb "github.com/Yujiman/e_commerce/goods/order/orderItem/internal/proto/orderItem"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (Server) Add(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 	return add.Handle(ctx, request)
 }
 
-func (Server) GetAll(context.Context, *pb.GetAllRequest) (*pb.OrderItems, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+func (Server) GetAll(ctx context.Context, req *pb.GetAllRequest) (*pb.OrderItems, error) {
+	return getAll.Handle(ctx, req)
 }
-func (Server) Find(context.Context, *pb.FindRequest) (*pb.OrderItems, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
+func (Server) Find(ctx context.Context, req *pb.FindRequest) (*pb.OrderItems, error) {
+	return find.Handle(ctx, req)
 }
-func (Server) Update(context.Context, *pb.UpdateRequest) (*pb.UUID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+func (Server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, error) {
+	return update.Handle(ctx, req)
 }

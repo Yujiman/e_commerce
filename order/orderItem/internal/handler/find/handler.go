@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/Yujiman/e_commerce/goods/order/orderItem/internal/proto/orderItem"
 	orderItemModel "github.com/Yujiman/e_commerce/goods/order/orderItem/internal/storage/db/model/orderItem"
+	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/order/orderItem/internal/utils"
 )
 
@@ -47,12 +48,12 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.OrderItems, error
 	var orderItems []*pb.OrderItem
 	for _, item := range orderItemItems {
 		orderItems = append(orderItems, &pb.OrderItem{
-			Id:        item.Id,
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			OrderId:   "",
-			Quantity:  0,
-			Price:     0,
+			Id:        item.Id.String(),
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			OrderId:   item.OrderId.String(),
+			Quantity:  item.Quantity,
+			Price:     item.Price,
 		})
 	}
 
@@ -64,14 +65,16 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.OrderItems, error
 	}, nil
 }
 
-func bindDTO(request *pb.FindRequest) *orderItemModel.FindDTO {
-	//var delivery *bool
-	//if request.Delivery != nil {
-	//	delivery = &request.Delivery.Value
-	//}
+func bindDTO(req *pb.FindRequest) *orderItemModel.FindDTO {
+	dto := &orderItemModel.FindDTO{}
 
-	return &orderItemModel.FindDTO{
-		// TODO Fill!
-		//Delivery:        delivery,
+	if req.OrderItemId != "" {
+		id, _ := types.NewUuidType(req.OrderItemId, false)
+		dto.OrderItemId = id
 	}
+	if req.OrderId != "" {
+		id, _ := types.NewUuidType(req.OrderId, false)
+		dto.OrderId = id
+	}
+	return dto
 }
