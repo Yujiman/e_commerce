@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package orderItem;
+
+option go_package = "/;orderItem";
+
+service OrderItemService {
+  rpc GetAll (GetAllRequest) returns (OrderItems);
+  rpc Find (FindRequest) returns (OrderItems);
+  rpc Add (AddRequest) returns (UUID);
+  rpc Update (UpdateRequest) returns (UUID);
+}
+
+// Entities:
+message OrderItem {
+  string id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string order_id =4;
+  int64 quantity = 5;
+  double price = 6;
+}
+
+message OrderItems {
+  uint32 pages_count = 1;
+  uint32 total_items = 2;
+  uint32 per_page = 3;
+  repeated OrderItem order_items = 4;
+}
+
+message GetAllRequest {
+  PaginationRequest pagination = 1;
+}
+
+message FindRequest {
+  PaginationRequest pagination =1;
+  string order_id = 2;
+  string order_item_id =3;
+}
+
+message AddRequest {
+  string order_id =1;
+  int64 quantity = 2;
+  double price = 3;
+}
+
+message UpdateRequest {
+  string order_item_id =1;
+  int64  quantity = 2;
+  double price =3;
+}
+
+
+// Base
+message UUID {
+  string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+  bool value = 1;
+}
+
+message PaginationRequest {
+  uint32 page = 1;
+  int32 limit = 2;
+  uint32 offset = 3;
+}
