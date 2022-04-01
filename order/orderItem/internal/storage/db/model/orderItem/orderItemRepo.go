@@ -14,8 +14,8 @@ import (
 )
 
 type FindDTO struct {
-	// TODO Fill!
-	//Delivery        *bool
+	OrderItemId *types.UuidType
+	OrderId     *types.UuidType
 }
 
 type Repository struct {
@@ -35,7 +35,7 @@ func (repo *Repository) GetAll(ctx context.Context, limit, offset uint32) ([]*Or
 		sqlLimit = sql.NullInt32{Int32: int32(limit), Valid: true}
 	}
 
-	query := `SELECT * FROM order_item ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
+	query := `SELECT * FROM order_items ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
 
 	err := repo.DbCon.SelectContext(ctx, &orderItems, query, sqlLimit, offset)
 	switch err {
@@ -50,7 +50,7 @@ func (repo *Repository) GetAll(ctx context.Context, limit, offset uint32) ([]*Or
 func (repo *Repository) GetCountAll(ctx context.Context) (uint32, error) {
 	var count uint32
 
-	query := `SELECT COUNT(*) FROM order_item;`
+	query := `SELECT COUNT(*) FROM order_items;`
 
 	err := repo.DbCon.GetContext(ctx, &count, query)
 	if err != nil {
@@ -83,7 +83,7 @@ func (repo *Repository) GetCountAllForFind(ctx context.Context, dto *FindDTO) (u
 func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*OrderItem, error) {
 	orderItem := &OrderItem{}
 
-	query := `SELECT * FROM order_item WHERE id = $1;`
+	query := `SELECT * FROM order_items WHERE id = $1;`
 
 	err := repo.DbCon.GetContext(ctx, orderItem, query, id)
 	switch err {
@@ -100,7 +100,7 @@ func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*OrderI
 func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, error) {
 	var has bool
 
-	query := `SELECT EXISTS(SELECT 1 FROM order_item WHERE id = $1);`
+	query := `SELECT EXISTS(SELECT 1 FROM order_items WHERE id = $1);`
 
 	err := repo.DbCon.GetContext(ctx, &has, query, id)
 	if err != nil {
@@ -135,22 +135,16 @@ func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset ui
 }
 
 func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuilder {
-	// TODO Fill!
-	//if dto.CityId.String() != "" { // Equal
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("city_id = :city_id").
-	//		SetParameter(":city_id", dto.CityId)
-	//}
-	//if dto.ViewName != "" { // Like
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("LOWER(view_name) LIKE :view_name").
-	//		SetParameter(":view_name", "%"+strings.ToLower(dto.ViewName)+"%")
-	//}
-	//if dto.Delivery != nil { // Nullable
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("delivery = :delivery").
-	//		SetParameter(":delivery", *dto.Delivery)
-	//}
+	if dto.OrderId != nil { // Nullable
+		queryBuilder = queryBuilder.
+			OrWhere("order_id = :order_id").
+			SetParameter(":order_id", *dto.OrderId)
+	}
+	if dto.OrderItemId != nil { // Nullable
+		queryBuilder = queryBuilder.
+			OrWhere("order_item_id = :order_item_id").
+			SetParameter(":order_item_id", *dto.OrderItemId)
+	}
 
 	return queryBuilder
 }

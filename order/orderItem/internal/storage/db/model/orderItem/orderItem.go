@@ -12,7 +12,12 @@ import (
 )
 
 type OrderItem struct {
-	Id types.UuidType `db:"id"`
+	Id        types.UuidType `db:"id"`
+	CreatedAt time.Time      `db:"created_at"`
+	UpdatedAt time.Time      `db:"updated_at"`
+	Quantity  int64          `db:"quantity"`
+	Price     float64        `db:"price"`
+	OrderId   types.UuidType `db:"order_id"`
 }
 
 func (orderItem *OrderItem) isRequiredEmpty() bool {
@@ -31,8 +36,8 @@ func (orderItem *OrderItem) Add(ctx context.Context, tr *db.Transaction) (err er
 	orderItem.UpdatedAt = orderItem.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO order_item(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO order_items(id, created_at, updated_at, quantity, price, order_id)
+			 VALUES(:id, :created_at, :updated_at, :quantity, :price, :order_id);`
 
 	return tr.PersistNamedCtx(ctx, query, orderItem)
 }
@@ -41,20 +46,34 @@ func (orderItem *OrderItem) Remove(ctx context.Context, tr *db.Transaction) (err
 	defer rollbackIfError(tr, &err)
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `DELETE FROM order_item WHERE id=:id;`, orderItem)
+	return tr.PersistNamedCtx(ctx, `DELETE FROM order_items WHERE id=:id;`, orderItem)
 }
 
-func (orderItem *OrderItem) ChangeLOREM(ctx context.Context, tr *db.Transaction, LOREM string) (err error) {
+func (orderItem *OrderItem) ChangePrice(ctx context.Context, tr *db.Transaction, newPrice float64) (err error) {
 	defer rollbackIfError(tr, &err)
 
-	if orderItem.LOREM == LOREM {
-		return status.Error(codes.Code(409), "LOREM already same.")
+	if orderItem.Price == newPrice {
+		return status.Error(codes.Code(409), "price already same.")
 	}
 
-	orderItem.LOREM = LOREM
+	orderItem.Price = newPrice
 
 	// language=PostgreSQL
-	query := `UPDATE order_item SET LOREM = :LOREM WHERE id = :id;`
+	query := `UPDATE order_items SET price = :price WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, orderItem)
+}
+
+func (orderItem *OrderItem) ChangeQuantity(ctx context.Context, tr *db.Transaction, quantity int64) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if orderItem.Quantity == quantity {
+		return status.Error(codes.Code(409), "quantity already same.")
+	}
+
+	orderItem.Quantity = quantity
+
+	// language=PostgreSQL
+	query := `UPDATE order_items SET quantity = :quantity WHERE id = :id;`
 	return tr.PersistNamedCtx(ctx, query, orderItem)
 }
 
@@ -69,7 +88,7 @@ func (orderItem *OrderItem) ApplyUpdatedAt(tr *db.Transaction, ctx context.Conte
 	orderItem.UpdatedAt = date
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `UPDATE order_item SET updated_at = :updated_at WHERE id = :id`, orderItem)
+	return tr.PersistNamedCtx(ctx, `UPDATE order_items SET updated_at = :updated_at WHERE id = :id`, orderItem)
 }
 
 func rollbackIfError(tr *db.Transaction, err *error) {
