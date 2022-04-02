@@ -48,11 +48,12 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Orders, error) {
 	var orders []*pb.Order
 	for _, item := range orderItems {
 		orders = append(orders, &pb.Order{
-			Id:        item.Id.String(),
-			CreatedAt: item.CreatedAt.Unix(),
-			UpdatedAt: item.UpdatedAt.Unix(),
-			ClientId:  item.ClientId.String(),
-			Status:    item.Status.String(),
+			Id:          item.Id.String(),
+			CreatedAt:   item.CreatedAt.Unix(),
+			UpdatedAt:   item.UpdatedAt.Unix(),
+			ClientId:    item.ClientId.String(),
+			Status:      item.Status.String(),
+			OrderNumber: item.OrderNumber,
 		})
 	}
 

@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package aggregatorOrder;
+
+option go_package = "/;aggregatorOrder";
+
+service AggregatorOrderService {
+    rpc GeItemsByOrder (GeItemsByOrderIRequest) returns (Order);
+}
+
+// Entities:
+message Order {
+    message IsPayed {
+        bool value = 1;
+    }
+
+    uint32 pages_count = 1;
+    uint32 total_items = 2;
+    uint32 per_page = 3;
+
+
+    string order_id = 4;
+    int64 created_at = 5;
+    int64 updated_at = 6;
+    string client_id = 7;
+    string order_status = 8;
+    int64 order_number = 9;
+    IsPayed is_payed = 10;
+
+    repeated OrderItem items = 11;
+}
+
+message Orders {
+    uint32 pages_count = 1;
+    uint32 total_items = 2;
+    uint32 per_page = 3;
+    repeated Order orders = 4;
+}
+
+message OrderItem {
+    string id = 1;
+    string order_id = 2;
+    int64 quantity = 3;
+    double price = 4;
+}
+
+message GeItemsByOrderIRequest {
+    PaginationRequest pagination =1;
+    string order_id =2;
+}
+
+
+// Base
+message UUID {
+    string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+    bool value = 1;
+}
+
+message PaginationRequest {
+    uint32 page = 1;
+    int32 limit = 2;
+    uint32 offset = 3;
+}
