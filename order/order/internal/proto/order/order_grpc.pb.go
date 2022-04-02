@@ -26,6 +26,7 @@ type OrderServiceClient interface {
 	Find(ctx context.Context, in *FindRequest, opts ...grpc.CallOption) (*Orders, error)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*UUID, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UUID, error)
+	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*UUID, error)
 }
 
 type orderServiceClient struct {
@@ -72,6 +73,15 @@ func (c *orderServiceClient) Update(ctx context.Context, in *UpdateRequest, opts
 	return out, nil
 }
 
+func (c *orderServiceClient) Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*UUID, error) {
+	out := new(UUID)
+	err := c.cc.Invoke(ctx, "/order.OrderService/Remove", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServiceServer is the server API for OrderService service.
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type OrderServiceServer interface {
 	Find(context.Context, *FindRequest) (*Orders, error)
 	Add(context.Context, *AddRequest) (*UUID, error)
 	Update(context.Context, *UpdateRequest) (*UUID, error)
+	Remove(context.Context, *RemoveRequest) (*UUID, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedOrderServiceServer) Add(context.Context, *AddRequest) (*UUID,
 }
 func (UnimplementedOrderServiceServer) Update(context.Context, *UpdateRequest) (*UUID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedOrderServiceServer) Remove(context.Context, *RemoveRequest) (*UUID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -184,6 +198,24 @@ func _OrderService_Update_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).Remove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/order.OrderService/Remove",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).Remove(ctx, req.(*RemoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _OrderService_Update_Handler,
+		},
+		{
+			MethodName: "Remove",
+			Handler:    _OrderService_Remove_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

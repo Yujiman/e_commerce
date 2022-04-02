@@ -9,6 +9,7 @@ service OrderService {
     rpc Find (FindRequest) returns (Orders);
     rpc Add (AddRequest) returns (UUID);
     rpc Update (UpdateRequest) returns (UUID);
+    rpc Remove (RemoveRequest) returns (UUID);
 }
 
 // Entities:
@@ -45,6 +46,10 @@ message IsPayed{
 }
 
 //Request
+message RemoveRequest{
+    string order_id = 1;
+}
+
 message GetAllRequest {
     PaginationRequest pagination = 1;
 }
