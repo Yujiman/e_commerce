@@ -12,25 +12,25 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func Add(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
+func Add(ctx context.Context, req *pb.AddRequest) (string, error) {
 	// Create gRPC connection
 	addr := config.GetConfig().ServicesParams.OrderItem
 	connection, err := service.GetGrpcClientConnection(addr)
 	defer utils.MuteCloseClientConn(connection)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	// Call gRPC method...
 	client := pb.NewOrderItemServiceClient(connection)
 	resp, err := client.Add(ctx, req)
 	if ctx.Err() == context.DeadlineExceeded {
-		return nil, status.Error(codes.Code(503), "Client to OrderItem Add() service timeout exceeded.")
+		return "", status.Error(codes.Code(503), "Client to OrderItem Add() service timeout exceeded.")
 	}
 
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return resp, nil
+	return resp.Value, nil
 }

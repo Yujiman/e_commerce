@@ -61,3 +61,27 @@ func HasOrder(ctx context.Context, orderId string) (bool, error) {
 
 	return resp.TotalItems > 0, nil
 }
+
+func Remove(ctx context.Context, orderId string) (string, error) {
+	addr := config.GetConfig().ServicesParams.Order
+	connection, err := service.GetGrpcClientConnection(addr)
+	defer utils.MuteCloseClientConn(connection)
+	if err != nil {
+		return "", err
+	}
+
+	// Call gRPC method...
+	client := pb.NewOrderServiceClient(connection)
+	resp, err := client.Remove(ctx, &pb.RemoveRequest{
+		OrderId: orderId,
+	})
+	if ctx.Err() == context.DeadlineExceeded {
+		return "", status.Error(codes.Code(503), "Client to Order Add() service timeout exceeded.")
+	}
+
+	if err != nil {
+		return "", err
+	}
+
+	return resp.Value, nil
+}

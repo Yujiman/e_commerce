@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DispatcherOrderItemServiceClient interface {
 	CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*UUID, error)
-	PutItems(ctx context.Context, in *PutItemsRequest, opts ...grpc.CallOption) (*UUID, error)
+	PutItems(ctx context.Context, in *PutItemsRequest, opts ...grpc.CallOption) (*UUIDs, error)
 }
 
 type dispatcherOrderItemServiceClient struct {
@@ -43,8 +43,8 @@ func (c *dispatcherOrderItemServiceClient) CreateOrder(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *dispatcherOrderItemServiceClient) PutItems(ctx context.Context, in *PutItemsRequest, opts ...grpc.CallOption) (*UUID, error) {
-	out := new(UUID)
+func (c *dispatcherOrderItemServiceClient) PutItems(ctx context.Context, in *PutItemsRequest, opts ...grpc.CallOption) (*UUIDs, error) {
+	out := new(UUIDs)
 	err := c.cc.Invoke(ctx, "/dispatcherOrderItem.DispatcherOrderItemService/PutItems", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func (c *dispatcherOrderItemServiceClient) PutItems(ctx context.Context, in *Put
 // for forward compatibility
 type DispatcherOrderItemServiceServer interface {
 	CreateOrder(context.Context, *CreateOrderRequest) (*UUID, error)
-	PutItems(context.Context, *PutItemsRequest) (*UUID, error)
+	PutItems(context.Context, *PutItemsRequest) (*UUIDs, error)
 	mustEmbedUnimplementedDispatcherOrderItemServiceServer()
 }
 
@@ -68,7 +68,7 @@ type UnimplementedDispatcherOrderItemServiceServer struct {
 func (UnimplementedDispatcherOrderItemServiceServer) CreateOrder(context.Context, *CreateOrderRequest) (*UUID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrder not implemented")
 }
-func (UnimplementedDispatcherOrderItemServiceServer) PutItems(context.Context, *PutItemsRequest) (*UUID, error) {
+func (UnimplementedDispatcherOrderItemServiceServer) PutItems(context.Context, *PutItemsRequest) (*UUIDs, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutItems not implemented")
 }
 func (UnimplementedDispatcherOrderItemServiceServer) mustEmbedUnimplementedDispatcherOrderItemServiceServer() {

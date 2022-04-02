@@ -188,6 +188,53 @@ func (x *PutItemsRequest) GetItems() []*OrderItem {
 }
 
 // Base
+type UUIDs struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Uuids []*UUID `protobuf:"bytes,1,rep,name=uuids,proto3" json:"uuids,omitempty"`
+}
+
+func (x *UUIDs) Reset() {
+	*x = UUIDs{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UUIDs) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UUIDs) ProtoMessage() {}
+
+func (x *UUIDs) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UUIDs.ProtoReflect.Descriptor instead.
+func (*UUIDs) Descriptor() ([]byte, []int) {
+	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UUIDs) GetUuids() []*UUID {
+	if x != nil {
+		return x.Uuids
+	}
+	return nil
+}
+
 type UUID struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -199,7 +246,7 @@ type UUID struct {
 func (x *UUID) Reset() {
 	*x = UUID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[3]
+		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -212,7 +259,7 @@ func (x *UUID) String() string {
 func (*UUID) ProtoMessage() {}
 
 func (x *UUID) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[3]
+	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +272,7 @@ func (x *UUID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UUID.ProtoReflect.Descriptor instead.
 func (*UUID) Descriptor() ([]byte, []int) {
-	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{3}
+	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UUID) GetValue() string {
@@ -244,7 +291,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[4]
+		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -257,7 +304,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[4]
+	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +317,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{4}
+	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{5}
 }
 
 type Exist struct {
@@ -284,7 +331,7 @@ type Exist struct {
 func (x *Exist) Reset() {
 	*x = Exist{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[5]
+		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -297,7 +344,7 @@ func (x *Exist) String() string {
 func (*Exist) ProtoMessage() {}
 
 func (x *Exist) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[5]
+	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +357,7 @@ func (x *Exist) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Exist.ProtoReflect.Descriptor instead.
 func (*Exist) Descriptor() ([]byte, []int) {
-	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{5}
+	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Exist) GetValue() bool {
@@ -333,7 +380,7 @@ type PaginationRequest struct {
 func (x *PaginationRequest) Reset() {
 	*x = PaginationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[6]
+		mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -346,7 +393,7 @@ func (x *PaginationRequest) String() string {
 func (*PaginationRequest) ProtoMessage() {}
 
 func (x *PaginationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[6]
+	mi := &file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -359,7 +406,7 @@ func (x *PaginationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaginationRequest.ProtoReflect.Descriptor instead.
 func (*PaginationRequest) Descriptor() ([]byte, []int) {
-	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{6}
+	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *PaginationRequest) GetPage() uint32 {
@@ -408,30 +455,34 @@ var file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDesc = 
 	0x6d, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x64, 0x69, 0x73, 0x70, 0x61,
 	0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x2e, 0x4f,
 	0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22,
-	0x1c, 0x0a, 0x04, 0x55, 0x55, 0x49, 0x44, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x07, 0x0a,
-	0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x1d, 0x0a, 0x05, 0x45, 0x78, 0x69, 0x73, 0x74, 0x12,
-	0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x55, 0x0a, 0x11, 0x50, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61,
-	0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x70, 0x61, 0x67, 0x65, 0x12, 0x14,
-	0x0a, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x6c,
-	0x69, 0x6d, 0x69, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x18, 0x03,
-	0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x32, 0xbc, 0x01, 0x0a,
-	0x1a, 0x44, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72,
-	0x49, 0x74, 0x65, 0x6d, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x51, 0x0a, 0x0b, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x12, 0x27, 0x2e, 0x64, 0x69, 0x73,
+	0x38, 0x0a, 0x05, 0x55, 0x55, 0x49, 0x44, 0x73, 0x12, 0x2f, 0x0a, 0x05, 0x75, 0x75, 0x69, 0x64,
+	0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x64, 0x69, 0x73, 0x70, 0x61, 0x74,
+	0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x2e, 0x55, 0x55,
+	0x49, 0x44, 0x52, 0x05, 0x75, 0x75, 0x69, 0x64, 0x73, 0x22, 0x1c, 0x0a, 0x04, 0x55, 0x55, 0x49,
+	0x44, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79,
+	0x22, 0x1d, 0x0a, 0x05, 0x45, 0x78, 0x69, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22,
+	0x55, 0x0a, 0x11, 0x50, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0d, 0x52, 0x04, 0x70, 0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x69, 0x6d, 0x69,
+	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x16,
+	0x0a, 0x06, 0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06,
+	0x6f, 0x66, 0x66, 0x73, 0x65, 0x74, 0x32, 0xbd, 0x01, 0x0a, 0x1a, 0x44, 0x69, 0x73, 0x70, 0x61,
+	0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x51, 0x0a, 0x0b, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f,
+	0x72, 0x64, 0x65, 0x72, 0x12, 0x27, 0x2e, 0x64, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65,
+	0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e,
+	0x64, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49,
+	0x74, 0x65, 0x6d, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x12, 0x4c, 0x0a, 0x08, 0x50, 0x75, 0x74, 0x49,
+	0x74, 0x65, 0x6d, 0x73, 0x12, 0x24, 0x2e, 0x64, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65,
+	0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x2e, 0x50, 0x75, 0x74, 0x49, 0x74,
+	0x65, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x64, 0x69, 0x73,
 	0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d,
-	0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x64, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72,
-	0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x12, 0x4b,
-	0x0a, 0x08, 0x50, 0x75, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x24, 0x2e, 0x64, 0x69, 0x73,
-	0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d,
-	0x2e, 0x50, 0x75, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x19, 0x2e, 0x64, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64,
-	0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x2e, 0x55, 0x55, 0x49, 0x44, 0x42, 0x17, 0x5a, 0x15, 0x2f,
-	0x3b, 0x64, 0x69, 0x73, 0x70, 0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72,
-	0x49, 0x74, 0x65, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2e, 0x55, 0x55, 0x49, 0x44, 0x73, 0x42, 0x17, 0x5a, 0x15, 0x2f, 0x3b, 0x64, 0x69, 0x73, 0x70,
+	0x61, 0x74, 0x63, 0x68, 0x65, 0x72, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -446,28 +497,30 @@ func file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescGZ
 	return file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDescData
 }
 
-var file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_goTypes = []interface{}{
 	(*OrderItem)(nil),          // 0: dispatcherOrderItem.OrderItem
 	(*CreateOrderRequest)(nil), // 1: dispatcherOrderItem.CreateOrderRequest
 	(*PutItemsRequest)(nil),    // 2: dispatcherOrderItem.PutItemsRequest
-	(*UUID)(nil),               // 3: dispatcherOrderItem.UUID
-	(*Empty)(nil),              // 4: dispatcherOrderItem.Empty
-	(*Exist)(nil),              // 5: dispatcherOrderItem.Exist
-	(*PaginationRequest)(nil),  // 6: dispatcherOrderItem.PaginationRequest
+	(*UUIDs)(nil),              // 3: dispatcherOrderItem.UUIDs
+	(*UUID)(nil),               // 4: dispatcherOrderItem.UUID
+	(*Empty)(nil),              // 5: dispatcherOrderItem.Empty
+	(*Exist)(nil),              // 6: dispatcherOrderItem.Exist
+	(*PaginationRequest)(nil),  // 7: dispatcherOrderItem.PaginationRequest
 }
 var file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_depIdxs = []int32{
 	0, // 0: dispatcherOrderItem.CreateOrderRequest.items:type_name -> dispatcherOrderItem.OrderItem
 	0, // 1: dispatcherOrderItem.PutItemsRequest.items:type_name -> dispatcherOrderItem.OrderItem
-	1, // 2: dispatcherOrderItem.DispatcherOrderItemService.CreateOrder:input_type -> dispatcherOrderItem.CreateOrderRequest
-	2, // 3: dispatcherOrderItem.DispatcherOrderItemService.PutItems:input_type -> dispatcherOrderItem.PutItemsRequest
-	3, // 4: dispatcherOrderItem.DispatcherOrderItemService.CreateOrder:output_type -> dispatcherOrderItem.UUID
-	3, // 5: dispatcherOrderItem.DispatcherOrderItemService.PutItems:output_type -> dispatcherOrderItem.UUID
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4, // 2: dispatcherOrderItem.UUIDs.uuids:type_name -> dispatcherOrderItem.UUID
+	1, // 3: dispatcherOrderItem.DispatcherOrderItemService.CreateOrder:input_type -> dispatcherOrderItem.CreateOrderRequest
+	2, // 4: dispatcherOrderItem.DispatcherOrderItemService.PutItems:input_type -> dispatcherOrderItem.PutItemsRequest
+	4, // 5: dispatcherOrderItem.DispatcherOrderItemService.CreateOrder:output_type -> dispatcherOrderItem.UUID
+	3, // 6: dispatcherOrderItem.DispatcherOrderItemService.PutItems:output_type -> dispatcherOrderItem.UUIDs
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_init() }
@@ -513,7 +566,7 @@ func file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_init() {
 			}
 		}
 		file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UUID); i {
+			switch v := v.(*UUIDs); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -525,7 +578,7 @@ func file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_init() {
 			}
 		}
 		file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Empty); i {
+			switch v := v.(*UUID); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -537,7 +590,7 @@ func file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_init() {
 			}
 		}
 		file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Exist); i {
+			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -549,6 +602,18 @@ func file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_init() {
 			}
 		}
 		file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Exist); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PaginationRequest); i {
 			case 0:
 				return &v.state
@@ -567,7 +632,7 @@ func file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_internal_proto_dispatcherOrderItem_dispatcherOrderItem_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

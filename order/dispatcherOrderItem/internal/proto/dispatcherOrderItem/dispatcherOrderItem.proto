@@ -6,7 +6,7 @@ option go_package = "/;dispatcherOrderItem";
 
 service DispatcherOrderItemService {
   rpc CreateOrder (CreateOrderRequest) returns (UUID);
-  rpc PutItems (PutItemsRequest) returns (UUID);
+  rpc PutItems (PutItemsRequest) returns (UUIDs);
 
 }
 
@@ -29,6 +29,9 @@ message PutItemsRequest {
 
 
 // Base
+message UUIDs{
+  repeated UUID  uuids = 1;
+}
 message UUID {
   string value = 1;
 }
