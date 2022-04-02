@@ -62,7 +62,7 @@ message GetBasketRequest {
 
 message PutRequest {
     string basket_id = 1;
-    int64 price = 2;
+    double price = 2;
     string good_id = 3;
     int64 quantity = 4;
 }

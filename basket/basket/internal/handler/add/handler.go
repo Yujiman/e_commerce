@@ -10,6 +10,8 @@ import (
 	basketModel "github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/basket"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
@@ -48,14 +50,12 @@ func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
 }
 
 func validate(req *pb.AddRequest) error {
-	// TODO Validate!
-	//if req.LOREM_ID == "" {
-	//	return status.Error(codes.Code(400), "LOREM_ID value is empty.")
-	//}
-	//
-	//if err := utils.CheckUuid(req.LOREM_ID); err != nil {
-	//	return status.Error(codes.Code(400), "LOREM_ID must be UUID type.")
-	//}
+	if req.UserId == "" {
+		return status.Error(codes.Code(400), "user_id not be empty.")
+	}
 
+	if err := utils.CheckUuid(req.UserId); err != nil {
+		return status.Error(codes.Code(400), "user_id must be uuid type.")
+	}
 	return nil
 }
