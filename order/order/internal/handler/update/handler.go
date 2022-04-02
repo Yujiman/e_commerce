@@ -17,7 +17,7 @@ import (
 func Handle(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, error) {
 	// Validation
 	if err := validate(req); err != nil {
-		return nil, status.Error(codes.Code(400), "Nothing to update.")
+		return nil, err
 	}
 
 	tr, err := db.NewTransaction(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
