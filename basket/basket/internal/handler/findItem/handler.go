@@ -1,17 +1,24 @@
-package find
+package findItem
 
 import (
 	"context"
 
+	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler"
 	pb "github.com/Yujiman/e_commerce/goods/basket/basket/internal/proto/basket"
-	model "github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/basket"
+	model "github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/basketItem"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const PerPage = 10
 
 func Handle(ctx context.Context, req *pb.FindItemRequest) (*pb.Items, error) {
+	if err := validation(req); err != nil {
+		return nil, err
+	}
+
 	if req.Pagination == nil {
 		req.Pagination = &pb.PaginationRequest{}
 	}
@@ -45,25 +52,32 @@ func Handle(ctx context.Context, req *pb.FindItemRequest) (*pb.Items, error) {
 		return nil, err
 	}
 
-	var items []*pb.Item
-	for _, item := range basketItems {
-		items = append(items, &pb.Item{
-			Id:        item.Id.String(),
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			Price:     0,
-			BasketId:  "",
-			GoodId:    "",
-			Quantity:  0,
-		})
-	}
-
 	return &pb.Items{
 		PagesCount: pager.GetPagesCount(),
 		TotalItems: countAll,
 		PerPage:    pager.PerPage(),
-		Items:      items,
+		Items:      handler.ModelsToItemsPb(basketItems),
 	}, nil
+}
+
+func validation(req *pb.FindItemRequest) error {
+	if req.BasketId == "" && req.GoodId == "" {
+		return status.Error(codes.Code(400), "basket_id ot good_id not be empty.")
+	}
+
+	if req.BasketId != "" {
+		if err := utils.CheckUuid(req.BasketId); err != nil {
+			return status.Error(codes.Code(400), "basket_id must be uuid type.")
+		}
+	}
+
+	if req.GoodId != "" {
+		if err := utils.CheckUuid(req.GoodId); err != nil {
+			return status.Error(codes.Code(400), "good_id must be uuid type.")
+		}
+	}
+
+	return nil
 }
 
 func bindDTO(req *pb.FindItemRequest) *model.FindDTO {
@@ -76,7 +90,7 @@ func bindDTO(req *pb.FindItemRequest) *model.FindDTO {
 
 	if req.GoodId != "" {
 		id, _ := types.NewUuidType(req.GoodId, false)
-		dto.UserId = id
+		dto.GoodId = id
 	}
 	return dto
 }
