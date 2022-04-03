@@ -21,7 +21,7 @@ func Handle(ctx context.Context, req *pb.PutRequest) (*pb.UUID, error) {
 	}
 
 	basketId, _ := types.NewUuidType(req.BasketId, false)
-	basketRepo := basket.NewBasketRepository()
+	basketRepo := basket.NewRepository()
 	existBasket, err := basketRepo.HasById(ctx, *basketId)
 	if err != nil {
 		return nil, err
