@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "/;user";
+
+service UserService {
+  rpc Add (AddRequest) returns (UUID);
+  rpc GetById (GetByIdRequest) returns (User);
+  rpc GetAll (GetAllRequest) returns (Users);
+  rpc Update (UpdateRequest) returns (UUID);
+  rpc Remove (RemoveRequest) returns (UUID);
+}
+
+// Entities:
+message User {
+  string id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string phone = 4;
+  string first_name =5;
+  string last_name = 6;
+  string middle_name =7;
+  string city_id = 8;
+}
+
+message Users {
+  uint32 pages_count = 1;
+  uint32 total_items = 2;
+  uint32 per_page = 3;
+  repeated User users = 4;
+}
+
+message AddRequest{
+  string phone = 1;
+  string first_name =2;
+  string last_name = 3;
+  string middle_name =4;
+  string city_id = 5;
+}
+
+message GetByIdRequest {
+  string user_id = 1;
+}
+
+message GetAllRequest {
+  PaginationRequest pagination = 1;
+}
+
+message UpdateRequest {
+  string user_id =1;
+  string first_name = 2;
+  string last_name =3;
+  string middle_name =4;
+}
+
+message RemoveRequest {
+  string user_id =1;
+}
+
+
+// Base
+message UUID {
+  string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+  bool value = 1;
+}
+
+message PaginationRequest {
+  uint32 page = 1;
+  int32 limit = 2;
+  uint32 offset = 3;
+}
