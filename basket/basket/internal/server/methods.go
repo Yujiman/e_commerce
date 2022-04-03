@@ -10,9 +10,8 @@ import (
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/put"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/removeBasket"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/removeItem"
+	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/update"
 	pb "github.com/Yujiman/e_commerce/goods/basket/basket/internal/proto/basket"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (Server) Add(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
@@ -44,5 +43,5 @@ func (Server) RemoveBasket(ctx context.Context, req *pb.RemoveBasketRequest) (*p
 }
 
 func (Server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+	return update.Handle(ctx, req)
 }
