@@ -5,6 +5,7 @@ import (
 
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/add"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/findItem"
+	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/getBasket"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/put"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/removeBasket"
 	pb "github.com/Yujiman/e_commerce/goods/basket/basket/internal/proto/basket"
@@ -25,7 +26,7 @@ func (Server) FindItem(ctx context.Context, req *pb.FindItemRequest) (*pb.Items,
 }
 
 func (Server) GetBasket(ctx context.Context, req *pb.GetBasketRequest) (*pb.Basket, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBasket not implemented")
+	return getBasket.Handle(ctx, req)
 }
 func (Server) HasBasket(ctx context.Context, req *pb.HasBasketRequest) (*pb.Basket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HasBasket not implemented")
