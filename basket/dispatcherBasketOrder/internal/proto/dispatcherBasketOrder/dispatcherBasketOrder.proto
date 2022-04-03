@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package dispatcherBasketOrder;
+
+option go_package = "/;dispatcherBasketOrder";
+
+service DispatcherBasketOrderService {
+  rpc CreateBasketOrderOrder (CreateBasketOrderOrderRequest) returns (UUID);
+}
+
+// BasketOrder
+message CreateBasketOrderOrderRequest {
+  string user_id = 1;
+}
+
+
+// Base
+message UUID {
+  string value = 1;
+}
