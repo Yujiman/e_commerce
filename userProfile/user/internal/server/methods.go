@@ -7,9 +7,8 @@ import (
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/getAll"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/getById"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/remove"
+	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/update"
 	pb "github.com/Yujiman/e_commerce/goods/userProfile/user/internal/proto/user"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (Server) Add(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
@@ -25,7 +24,7 @@ func (Server) GetAll(ctx context.Context, req *pb.GetAllRequest) (*pb.Users, err
 }
 
 func (Server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+	return update.Handle(ctx, req)
 }
 
 func (Server) Remove(ctx context.Context, req *pb.RemoveRequest) (*pb.UUID, error) {
