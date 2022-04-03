@@ -25,6 +25,7 @@ type BasketServiceClient interface {
 	Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*UUID, error)
 	GetBasket(ctx context.Context, in *GetBasketRequest, opts ...grpc.CallOption) (*Basket, error)
 	HasBasket(ctx context.Context, in *HasBasketRequest, opts ...grpc.CallOption) (*Exist, error)
+	GetBasketByUser(ctx context.Context, in *GetBasketByUserRequest, opts ...grpc.CallOption) (*Basket, error)
 	FindItem(ctx context.Context, in *FindItemRequest, opts ...grpc.CallOption) (*Items, error)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*UUID, error)
 	RemoveItem(ctx context.Context, in *RemoveItemRequest, opts ...grpc.CallOption) (*UUID, error)
@@ -61,6 +62,15 @@ func (c *basketServiceClient) GetBasket(ctx context.Context, in *GetBasketReques
 func (c *basketServiceClient) HasBasket(ctx context.Context, in *HasBasketRequest, opts ...grpc.CallOption) (*Exist, error) {
 	out := new(Exist)
 	err := c.cc.Invoke(ctx, "/basket.BasketService/HasBasket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *basketServiceClient) GetBasketByUser(ctx context.Context, in *GetBasketByUserRequest, opts ...grpc.CallOption) (*Basket, error) {
+	out := new(Basket)
+	err := c.cc.Invoke(ctx, "/basket.BasketService/GetBasketByUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -119,6 +129,7 @@ type BasketServiceServer interface {
 	Put(context.Context, *PutRequest) (*UUID, error)
 	GetBasket(context.Context, *GetBasketRequest) (*Basket, error)
 	HasBasket(context.Context, *HasBasketRequest) (*Exist, error)
+	GetBasketByUser(context.Context, *GetBasketByUserRequest) (*Basket, error)
 	FindItem(context.Context, *FindItemRequest) (*Items, error)
 	Add(context.Context, *AddRequest) (*UUID, error)
 	RemoveItem(context.Context, *RemoveItemRequest) (*UUID, error)
@@ -139,6 +150,9 @@ func (UnimplementedBasketServiceServer) GetBasket(context.Context, *GetBasketReq
 }
 func (UnimplementedBasketServiceServer) HasBasket(context.Context, *HasBasketRequest) (*Exist, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HasBasket not implemented")
+}
+func (UnimplementedBasketServiceServer) GetBasketByUser(context.Context, *GetBasketByUserRequest) (*Basket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBasketByUser not implemented")
 }
 func (UnimplementedBasketServiceServer) FindItem(context.Context, *FindItemRequest) (*Items, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindItem not implemented")
@@ -218,6 +232,24 @@ func _BasketService_HasBasket_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BasketServiceServer).HasBasket(ctx, req.(*HasBasketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BasketService_GetBasketByUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBasketByUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BasketServiceServer).GetBasketByUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/basket.BasketService/GetBasketByUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BasketServiceServer).GetBasketByUser(ctx, req.(*GetBasketByUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -330,6 +362,10 @@ var BasketService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "HasBasket",
 			Handler:    _BasketService_HasBasket_Handler,
+		},
+		{
+			MethodName: "GetBasketByUser",
+			Handler:    _BasketService_GetBasketByUser_Handler,
 		},
 		{
 			MethodName: "FindItem",

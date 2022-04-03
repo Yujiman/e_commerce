@@ -6,6 +6,7 @@ import (
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/add"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/findItem"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/getBasket"
+	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/getBasketByUser"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/hasBasket"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/put"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/handler/removeBasket"
@@ -44,4 +45,8 @@ func (Server) RemoveBasket(ctx context.Context, req *pb.RemoveBasketRequest) (*p
 
 func (Server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, error) {
 	return update.Handle(ctx, req)
+}
+
+func (Server) GetBasketByUser(ctx context.Context, req *pb.GetBasketByUserRequest) (*pb.Basket, error) {
+	return getBasketByUser.Handle(ctx, req)
 }

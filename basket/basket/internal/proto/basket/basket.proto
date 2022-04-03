@@ -8,13 +8,14 @@ service BasketService {
     rpc Put (PutRequest) returns (UUID);
     rpc GetBasket (GetBasketRequest) returns (Basket);
     rpc HasBasket (HasBasketRequest) returns (Exist);
+    rpc GetBasketByUser (GetBasketByUserRequest) returns (Basket);
 
     rpc FindItem (FindItemRequest) returns (Items);
     rpc Add (AddRequest) returns (UUID);
     rpc RemoveItem (RemoveItemRequest) returns (UUID);
     rpc RemoveBasket (RemoveBasketRequest) returns (UUID);
 
-    rpc Update(UpdateRequest)returns (UUID);
+    rpc Update (UpdateRequest) returns (UUID);
 }
 
 // Entities:
@@ -50,8 +51,12 @@ message Items {
     repeated Item items = 4;
 }
 
-message HasBasketRequest{
-    string basket_id =1;
+message GetBasketByUserRequest {
+    string user_id = 1;
+}
+
+message HasBasketRequest {
+    string basket_id = 1; //not required
     string user_id = 2; //not required
 }
 
@@ -74,7 +79,7 @@ message FindItemRequest {
 }
 
 message AddRequest {
-    string user_id =1;
+    string user_id = 1;
 }
 
 message RemoveItemRequest {
@@ -83,12 +88,12 @@ message RemoveItemRequest {
 }
 
 message RemoveBasketRequest {
-    string basket_id =1;
+    string basket_id = 1;
 }
 
-message UpdateRequest{
-    string user_id  =1;
-    string basket_item_id =2;
+message UpdateRequest {
+    string user_id = 1;
+    string basket_item_id = 2;
     int64 quantity = 3;
 }
 // Base

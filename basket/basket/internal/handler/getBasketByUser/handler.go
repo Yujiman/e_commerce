@@ -1,4 +1,4 @@
-package getBasket
+package getBasketByUser
 
 import (
 	"context"
@@ -14,32 +14,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-const PerPage = 10
-
-func Handle(ctx context.Context, req *pb.GetBasketRequest) (*pb.Basket, error) {
+func Handle(ctx context.Context, req *pb.GetBasketByUserRequest) (*pb.Basket, error) {
 	// Validation
 	if err := validate(req); err != nil {
 		return nil, err
 	}
 
-	if req.Pagination == nil {
-		req.Pagination = &pb.PaginationRequest{}
-	}
-
 	id, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
 
-	p := req.Pagination.Page
-	limit := req.Pagination.Limit
-	offset := req.Pagination.Offset
-
 	basketRepo := basketModel.NewRepository()
-	basket, err := basketRepo.GetById(ctx, *id)
+	basket, err := basketRepo.GetByUserId(ctx, *id)
 	if err != nil {
 		return nil, err
 	}
 
 	dto := &basketItem.FindDTO{
-		BasketId: id,
+		BasketId: &basket.Id,
 	}
 	countAll, err := basketItem.NewBasketRepository().GetCountAllForFind(ctx, dto)
 	if err != nil {
@@ -47,21 +37,15 @@ func Handle(ctx context.Context, req *pb.GetBasketRequest) (*pb.Basket, error) {
 	}
 	if countAll == 0 {
 		return &pb.Basket{
-			Id:        basket.Id.String(),
-			CreatedAt: basket.CreatedAt.Unix(),
-			UpdatedAt: basket.UpdatedAt.Unix(),
-			UserId:    basket.UserId.String(),
+			TotalItems: 0,
+			Id:         basket.Id.String(),
+			CreatedAt:  basket.CreatedAt.Unix(),
+			UpdatedAt:  basket.UpdatedAt.Unix(),
+			UserId:     basket.UserId.String(),
 		}, nil
 	}
 
-	perPage := int32(PerPage)
-	if limit != 0 {
-		perPage = limit
-	}
-
-	pager := utils.NewPagination(p, perPage, offset, countAll)
-
-	items, err := basketItem.NewBasketRepository().Find(ctx, &basketItem.FindDTO{BasketId: id}, pager.PerPage(), pager.Offset())
+	items, err := basketItem.NewBasketRepository().Find(ctx, &basketItem.FindDTO{BasketId: id}, -1, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -78,13 +62,13 @@ func Handle(ctx context.Context, req *pb.GetBasketRequest) (*pb.Basket, error) {
 	}, nil
 }
 
-func validate(req *pb.GetBasketRequest) error {
-	if req.BasketId == "" {
-		return status.Error(codes.Code(400), "basket_id not be empty.")
+func validate(req *pb.GetBasketByUserRequest) error {
+	if req.UserId == "" {
+		return status.Error(codes.Code(400), "user_id not be empty.")
 	}
 
-	if err := utils.CheckUuid(req.BasketId); err != nil {
-		return status.Error(codes.Code(400), "basket_id must be uuid type.")
+	if err := utils.CheckUuid(req.UserId); err != nil {
+		return status.Error(codes.Code(400), "user_id must be uuid type.")
 	}
 	return nil
 }
