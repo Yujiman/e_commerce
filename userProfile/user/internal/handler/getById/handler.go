@@ -26,9 +26,9 @@ func Handle(ctx context.Context, req *pb.GetByIdRequest) (*pb.User, error) {
 		CreatedAt:  result.CreatedAt.Unix(),
 		UpdatedAt:  result.UpdatedAt.Unix(),
 		Phone:      result.Phone,
-		FirstName:  result.FirstName,
-		LastName:   result.LastName,
-		MiddleName: result.MiddleName,
+		Firstname:  result.Firstname,
+		Lastname:   result.Lastname,
+		Patronymic: result.Patronymic,
 		CityId:     result.CityId.String(),
 	}, nil
 }

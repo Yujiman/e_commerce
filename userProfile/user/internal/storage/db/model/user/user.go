@@ -17,14 +17,14 @@ type User struct {
 	UpdatedAt  time.Time      `db:"updated_at"`
 	CityId     types.UuidType `db:"city_id"`
 	Phone      string         `db:"phone"`
-	FirstName  string         `db:"first_name"`
-	LastName   string         `db:"last_name"`
-	MiddleName string         `db:"middle_name"`
+	Firstname  string         `db:"firstname"`
+	Lastname   string         `db:"lastname"`
+	Patronymic string         `db:"patronymic"`
 }
 
 func (user *User) isRequiredEmpty() bool {
 	return user.Id.String() == "" || user.CityId.String() == "" || user.Phone == "" ||
-		user.FirstName == "" || user.MiddleName == "" || user.LastName == ""
+		user.Firstname == "" || user.Patronymic == "" || user.Lastname == ""
 }
 
 func (user *User) Add(ctx context.Context, tr *db.Transaction) (err error) {
@@ -39,8 +39,8 @@ func (user *User) Add(ctx context.Context, tr *db.Transaction) (err error) {
 	user.UpdatedAt = user.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO user(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO "user" (id, created_at, updated_at, city_id, phone, firstname, lastname, patronymic)
+			 VALUES(:id, :created_at, :updated_at, :city_id, :phone, :firstname, :lastname, :patronymic);`
 
 	return tr.PersistNamedCtx(ctx, query, user)
 }
@@ -49,7 +49,7 @@ func (user *User) Remove(ctx context.Context, tr *db.Transaction) (err error) {
 	defer rollbackIfError(tr, &err)
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `DELETE FROM user WHERE id=:id;`, user)
+	return tr.PersistNamedCtx(ctx, `DELETE FROM "user" WHERE id=:id;`, user)
 }
 
 func (user *User) ChangeCityId(ctx context.Context, tr *db.Transaction, newId types.UuidType) (err error) {
@@ -62,7 +62,35 @@ func (user *User) ChangeCityId(ctx context.Context, tr *db.Transaction, newId ty
 	user.CityId = newId
 
 	// language=PostgreSQL
-	query := `UPDATE user SET LOREM = :LOREM WHERE id = :id;`
+	query := `UPDATE "user" SET city_id = :city_id WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, user)
+}
+
+func (user *User) ChangePhone(ctx context.Context, tr *db.Transaction, phone string) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if user.Phone == phone {
+		return status.Error(codes.Code(409), "phone already same.")
+	}
+
+	user.Phone = phone
+
+	// language=PostgreSQL
+	query := `UPDATE "user" SET phone = :phone WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, user)
+}
+
+func (user *User) ChangeFirstName(ctx context.Context, tr *db.Transaction, phone string) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if user.Phone == phone {
+		return status.Error(codes.Code(409), "phone already same.")
+	}
+
+	user.Phone = phone
+
+	// language=PostgreSQL
+	query := `UPDATE "user" SET phone = :phone WHERE id = :id;`
 	return tr.PersistNamedCtx(ctx, query, user)
 }
 
@@ -77,7 +105,7 @@ func (user *User) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date t
 	user.UpdatedAt = date
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `UPDATE user SET updated_at = :updated_at WHERE id = :id`, user)
+	return tr.PersistNamedCtx(ctx, `UPDATE "user" SET updated_at = :updated_at WHERE id = :id`, user)
 }
 
 func rollbackIfError(tr *db.Transaction, err *error) {

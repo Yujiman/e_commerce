@@ -60,9 +60,9 @@ func convertUsersToProto(users []*user.User) []*pb.User {
 			CreatedAt:  item.CreatedAt.Unix(),
 			UpdatedAt:  item.UpdatedAt.Unix(),
 			Phone:      item.Phone,
-			FirstName:  item.FirstName,
-			LastName:   item.LastName,
-			MiddleName: item.MiddleName,
+			Firstname:  item.Firstname,
+			Lastname:   item.Lastname,
+			Patronymic: item.Patronymic,
 			CityId:     item.CityId.String(),
 		}
 

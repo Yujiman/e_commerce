@@ -29,9 +29,9 @@ func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
 		UpdatedAt:  createdAt,
 		CityId:     *cityId,
 		Phone:      req.Phone,
-		FirstName:  req.FirstName,
-		LastName:   req.LastName,
-		MiddleName: req.MiddleName,
+		Firstname:  req.Firstname,
+		Lastname:   req.Lastname,
+		Patronymic: req.Patronymic,
 	}
 	tr, err := db.NewTransaction(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {
@@ -49,7 +49,7 @@ func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
 }
 
 func validate(req *pb.AddRequest) error {
-	if req.LastName == "" || req.FirstName == "" || req.MiddleName == "" || req.Phone == "" || req.CityId == "" {
+	if req.Lastname == "" || req.Firstname == "" || req.Patronymic == "" || req.Phone == "" || req.CityId == "" {
 		return status.Error(codes.Code(400), "required fields not filled.")
 	}
 
