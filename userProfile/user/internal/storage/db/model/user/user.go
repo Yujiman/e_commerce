@@ -80,17 +80,45 @@ func (user *User) ChangePhone(ctx context.Context, tr *db.Transaction, phone str
 	return tr.PersistNamedCtx(ctx, query, user)
 }
 
-func (user *User) ChangeFirstName(ctx context.Context, tr *db.Transaction, phone string) (err error) {
+func (user *User) ChangeFirstName(ctx context.Context, tr *db.Transaction, firstname string) (err error) {
 	defer rollbackIfError(tr, &err)
 
-	if user.Phone == phone {
-		return status.Error(codes.Code(409), "phone already same.")
+	if user.Firstname == firstname {
+		return status.Error(codes.Code(409), "firstname already same.")
 	}
 
-	user.Phone = phone
+	user.Firstname = firstname
 
 	// language=PostgreSQL
-	query := `UPDATE "user" SET phone = :phone WHERE id = :id;`
+	query := `UPDATE "user" SET firstname = :firstname WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, user)
+}
+
+func (user *User) ChangeLastname(ctx context.Context, tr *db.Transaction, lastname string) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if user.Lastname == lastname {
+		return status.Error(codes.Code(409), "lastname already same.")
+	}
+
+	user.Lastname = lastname
+
+	// language=PostgreSQL
+	query := `UPDATE "user" SET lastname = :lastname WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, user)
+}
+
+func (user *User) ChangePatronymic(ctx context.Context, tr *db.Transaction, patronymic string) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if user.Patronymic == patronymic {
+		return status.Error(codes.Code(409), "patronymic already same.")
+	}
+
+	user.Patronymic = patronymic
+
+	// language=PostgreSQL
+	query := `UPDATE "user" SET patronymic = :patronymic WHERE id = :id;`
 	return tr.PersistNamedCtx(ctx, query, user)
 }
 

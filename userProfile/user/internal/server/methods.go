@@ -6,6 +6,7 @@ import (
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/add"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/getAll"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/getById"
+	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/handler/remove"
 	pb "github.com/Yujiman/e_commerce/goods/userProfile/user/internal/proto/user"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -28,5 +29,5 @@ func (Server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, erro
 }
 
 func (Server) Remove(ctx context.Context, req *pb.RemoveRequest) (*pb.UUID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
+	return remove.Handle(ctx, req)
 }

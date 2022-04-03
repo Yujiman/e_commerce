@@ -8,6 +8,9 @@ import (
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/storage/db"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/storage/db/model/types"
 	userModel "github.com/Yujiman/e_commerce/goods/userProfile/user/internal/storage/db/model/user"
+	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Handle(ctx context.Context, req *pb.RemoveRequest) (*pb.UUID, error) {
@@ -47,8 +50,13 @@ func Handle(ctx context.Context, req *pb.RemoveRequest) (*pb.UUID, error) {
 	return &pb.UUID{Value: req.UserId}, nil
 }
 
-func validate(request *pb.RemoveRequest) error {
-	//TODO
+func validate(req *pb.RemoveRequest) error {
+	if req.UserId == "" {
+		return status.Error(codes.Code(400), "user_id can't be empty")
+	}
 
+	if err := utils.CheckUuid(req.UserId); err != nil {
+		return status.Error(codes.Code(400), "user_id must be uuid type.")
+	}
 	return nil
 }
