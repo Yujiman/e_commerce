@@ -2,9 +2,11 @@ package add
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	pb "github.com/Yujiman/e_commerce/goods/userProfile/user/internal/proto/user"
+	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/storage/db"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/storage/db/model/user"
 	"github.com/Yujiman/e_commerce/goods/userProfile/user/internal/utils"
@@ -18,16 +20,29 @@ func Handle(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
 	}
 
 	id, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
+	cityId, _ := types.NewUuidType(req.CityId, false)
+	createdAt := time.Now()
+
 	model := user.User{
 		Id:         *id,
-		CreatedAt:  time.Time{},
-		UpdatedAt:  time.Time{},
-		CityId:     types.UuidType{},
-		Phone:      "",
-		FirstName:  "",
-		LastName:   "",
-		MiddleName: "",
+		CreatedAt:  createdAt,
+		UpdatedAt:  createdAt,
+		CityId:     *cityId,
+		Phone:      req.Phone,
+		FirstName:  req.FirstName,
+		LastName:   req.LastName,
+		MiddleName: req.MiddleName,
 	}
+	tr, err := db.NewTransaction(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
+	if err != nil {
+		return nil, err
+	}
+
+	err = model.Add(ctx, tr)
+	if err != nil {
+		return nil, err
+	}
+
 	return &pb.UUID{
 		Value: model.Id.String(),
 	}, nil
