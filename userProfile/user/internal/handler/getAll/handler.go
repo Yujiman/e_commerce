@@ -57,13 +57,13 @@ func convertUsersToProto(users []*user.User) []*pb.User {
 	for _, item := range users {
 		preparedUser := pb.User{
 			Id:         item.Id.String(),
-			CreatedAt:  0,
-			UpdatedAt:  0,
-			Phone:      "",
-			FirstName:  "",
-			LastName:   "",
-			MiddleName: "",
-			CityId:     "",
+			CreatedAt:  item.CreatedAt.Unix(),
+			UpdatedAt:  item.UpdatedAt.Unix(),
+			Phone:      item.Phone,
+			FirstName:  item.FirstName,
+			LastName:   item.LastName,
+			MiddleName: item.MiddleName,
+			CityId:     item.CityId.String(),
 		}
 
 		result = append(result, &preparedUser)
