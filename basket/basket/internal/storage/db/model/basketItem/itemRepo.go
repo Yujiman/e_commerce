@@ -16,7 +16,7 @@ import (
 type FindDTO struct {
 	Id       *types.UuidType
 	BasketId *types.UuidType
-	UserId   *types.UuidType
+	GoodId   *types.UuidType
 }
 
 type Repository struct {
@@ -141,10 +141,10 @@ func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuil
 			OrWhere("id = :id").
 			SetParameter(":id", *dto.Id)
 	}
-	if dto.UserId != nil { // Nullable
+	if dto.GoodId != nil { // Nullable
 		queryBuilder = queryBuilder.
-			OrWhere("user_id = :user_id").
-			SetParameter(":good_id", *dto.UserId)
+			OrWhere("good_id = :good_id").
+			SetParameter(":good_id", *dto.GoodId)
 	}
 	if dto.BasketId != nil { // Nullable
 		queryBuilder = queryBuilder.

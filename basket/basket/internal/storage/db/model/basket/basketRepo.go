@@ -97,6 +97,23 @@ func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*Basket
 	}
 }
 
+func (repo *Repository) GetByUserId(ctx context.Context, id types.UuidType) (*Basket, error) {
+	basket := &Basket{}
+
+	query := `SELECT * FROM basket WHERE user_id = $1;`
+
+	err := repo.DbCon.GetContext(ctx, basket, query, id)
+	switch err {
+	case nil:
+		return basket, nil
+	case sql.ErrNoRows:
+		return nil, status.Error(codes.Code(409), "Basket not found.")
+	default:
+		utils.LogPrintf("Repository GetByUserId() error: %v", err)
+		return nil, status.Error(codes.Code(500), err.Error())
+	}
+}
+
 func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, error) {
 	var has bool
 
@@ -105,6 +122,19 @@ func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, e
 	err := repo.DbCon.GetContext(ctx, &has, query, id)
 	if err != nil {
 		utils.LogPrintf("Repository HasById() error: %v", err)
+		return false, status.Error(codes.Code(500), err.Error())
+	}
+	return has, nil
+}
+
+func (repo *Repository) HasByUserId(ctx context.Context, id types.UuidType) (bool, error) {
+	var has bool
+
+	query := `SELECT EXISTS(SELECT 1 FROM basket WHERE user_id = $1);`
+
+	err := repo.DbCon.GetContext(ctx, &has, query, id)
+	if err != nil {
+		utils.LogPrintf("Repository HasByUserId() error: %v", err)
 		return false, status.Error(codes.Code(500), err.Error())
 	}
 	return has, nil

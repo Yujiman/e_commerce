@@ -4,7 +4,7 @@ import (
 	"context"
 
 	pb "github.com/Yujiman/e_commerce/goods/basket/basket/internal/proto/basket"
-	model "github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/basketItem"
+	model "github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/basket"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/goods/basket/basket/internal/utils"
 	"google.golang.org/grpc/codes"
@@ -16,7 +16,7 @@ func Handle(ctx context.Context, req *pb.HasBasketRequest) (*pb.Exist, error) {
 		return nil, err
 	}
 
-	repository := model.NewBasketRepository()
+	repository := model.NewRepository()
 
 	dto := bindDTO(req)
 	countAll, err := repository.GetCountAllForFind(ctx, dto)
