@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type BasketServiceClient interface {
 	Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*UUID, error)
 	GetBasket(ctx context.Context, in *GetBasketRequest, opts ...grpc.CallOption) (*Basket, error)
-	HasBasket(ctx context.Context, in *HasBasketRequest, opts ...grpc.CallOption) (*Basket, error)
+	HasBasket(ctx context.Context, in *HasBasketRequest, opts ...grpc.CallOption) (*Exist, error)
 	FindItem(ctx context.Context, in *FindItemRequest, opts ...grpc.CallOption) (*Items, error)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*UUID, error)
 	RemoveItem(ctx context.Context, in *RemoveItemRequest, opts ...grpc.CallOption) (*UUID, error)
@@ -58,8 +58,8 @@ func (c *basketServiceClient) GetBasket(ctx context.Context, in *GetBasketReques
 	return out, nil
 }
 
-func (c *basketServiceClient) HasBasket(ctx context.Context, in *HasBasketRequest, opts ...grpc.CallOption) (*Basket, error) {
-	out := new(Basket)
+func (c *basketServiceClient) HasBasket(ctx context.Context, in *HasBasketRequest, opts ...grpc.CallOption) (*Exist, error) {
+	out := new(Exist)
 	err := c.cc.Invoke(ctx, "/basket.BasketService/HasBasket", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -118,7 +118,7 @@ func (c *basketServiceClient) Update(ctx context.Context, in *UpdateRequest, opt
 type BasketServiceServer interface {
 	Put(context.Context, *PutRequest) (*UUID, error)
 	GetBasket(context.Context, *GetBasketRequest) (*Basket, error)
-	HasBasket(context.Context, *HasBasketRequest) (*Basket, error)
+	HasBasket(context.Context, *HasBasketRequest) (*Exist, error)
 	FindItem(context.Context, *FindItemRequest) (*Items, error)
 	Add(context.Context, *AddRequest) (*UUID, error)
 	RemoveItem(context.Context, *RemoveItemRequest) (*UUID, error)
@@ -137,7 +137,7 @@ func (UnimplementedBasketServiceServer) Put(context.Context, *PutRequest) (*UUID
 func (UnimplementedBasketServiceServer) GetBasket(context.Context, *GetBasketRequest) (*Basket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBasket not implemented")
 }
-func (UnimplementedBasketServiceServer) HasBasket(context.Context, *HasBasketRequest) (*Basket, error) {
+func (UnimplementedBasketServiceServer) HasBasket(context.Context, *HasBasketRequest) (*Exist, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HasBasket not implemented")
 }
 func (UnimplementedBasketServiceServer) FindItem(context.Context, *FindItemRequest) (*Items, error) {

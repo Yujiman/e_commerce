@@ -7,7 +7,7 @@ option go_package = "/;basket";
 service BasketService {
     rpc Put (PutRequest) returns (UUID);
     rpc GetBasket (GetBasketRequest) returns (Basket);
-    rpc HasBasket (HasBasketRequest) returns (Basket);
+    rpc HasBasket (HasBasketRequest) returns (Exist);
 
     rpc FindItem (FindItemRequest) returns (Items);
     rpc Add (AddRequest) returns (UUID);
