@@ -22,7 +22,7 @@ type Repository struct {
 	DbCon *sqlx.DB
 }
 
-func NewBasketRepository() *Repository {
+func NewRepository() *Repository {
 	repository := &Repository{}
 	repository.DbCon = db.GetDbConnection()
 	return repository
