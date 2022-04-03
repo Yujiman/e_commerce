@@ -23,12 +23,12 @@ func Handle(ctx context.Context, req *pb.GetByIdRequest) (*pb.User, error) {
 
 	return &pb.User{
 		Id:         result.Id.String(),
-		CreatedAt:  0,
-		UpdatedAt:  0,
-		Phone:      "",
-		FirstName:  "",
-		LastName:   "",
-		MiddleName: "",
-		CityId:     "",
+		CreatedAt:  result.CreatedAt.Unix(),
+		UpdatedAt:  result.UpdatedAt.Unix(),
+		Phone:      result.Phone,
+		FirstName:  result.FirstName,
+		LastName:   result.LastName,
+		MiddleName: result.MiddleName,
+		CityId:     result.CityId.String(),
 	}, nil
 }
