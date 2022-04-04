@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/config"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/config"
 
 	"github.com/jmoiron/sqlx"
 

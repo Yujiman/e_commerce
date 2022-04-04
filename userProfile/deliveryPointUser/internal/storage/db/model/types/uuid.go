@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"database/sql/driver"
 
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/utils"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/utils"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

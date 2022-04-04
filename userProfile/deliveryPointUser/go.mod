@@ -1,4 +1,4 @@
-module github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser
+module github.com/Yujiman/e_commerce/userProfile/deliveryPointUser
 
 go 1.17
 

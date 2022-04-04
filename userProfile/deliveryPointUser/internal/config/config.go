@@ -4,7 +4,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/utils"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/utils"
 )
 
 var onceConf sync.Once

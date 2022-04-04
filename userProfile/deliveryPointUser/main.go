@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/bootstrap"
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/server"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/bootstrap"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/server"
 )
 
 func init() {

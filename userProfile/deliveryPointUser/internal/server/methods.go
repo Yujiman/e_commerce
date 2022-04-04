@@ -2,19 +2,19 @@ package server
 
 import (
 	"context"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/handler/attachUserToPoint"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/handler/detachUserToPoint"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/handler/getPointId"
 
-	pb "github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/proto/deliveryPointUser"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	pb "github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/proto/deliveryPointUser"
 )
 
 func (Server) AttachUserToPoint(ctx context.Context, req *pb.AttachUserToPointRequest) (*pb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AttachUserToPoint not implemented")
+	return attachUserToPoint.Handle(ctx, req)
 }
 func (Server) DetachUserToPoint(ctx context.Context, req *pb.DetachUserToPointRequest) (*pb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DetachUserToPoint not implemented")
+	return detachUserToPoint.Handle(ctx, req)
 }
 func (Server) GetPointId(ctx context.Context, req *pb.GetPointIdRequest) (*pb.DeliveryPointUser, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPointId not implemented")
+	return getPointId.Handle(ctx, req)
 }

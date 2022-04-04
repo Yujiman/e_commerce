@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/storage/db"
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/storage/db/model/types"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/storage/db"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/storage/db/model/types"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -34,8 +34,8 @@ func (dp *DeliveryPointUser) Add(ctx context.Context, tr *db.Transaction) (err e
 	dp.UpdatedAt = dp.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO delivery_point_user(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO "delivery_point_user"(user_id, created_at, updated_at, delivery_point_id)
+			 VALUES(:user_id, :created_at, :updated_at, :delivery_point_id);`
 
 	return tr.PersistNamedCtx(ctx, query, dp)
 }
@@ -44,21 +44,7 @@ func (dp *DeliveryPointUser) Remove(ctx context.Context, tr *db.Transaction) (er
 	defer rollbackIfError(tr, &err)
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `DELETE FROM delivery_point_user WHERE id=:id;`, dp)
-}
-
-func (dp *DeliveryPointUser) ChangeDeliveryPoint(ctx context.Context, tr *db.Transaction, newId types.UuidType) (err error) {
-	defer rollbackIfError(tr, &err)
-
-	if dp.DeliveryPointId.IsEqualTo(newId) {
-		return status.Error(codes.Code(409), "delivery_point_id already same.")
-	}
-
-	dp.DeliveryPointId = newId
-
-	// language=PostgreSQL
-	query := `UPDATE delivery_point_user SET LOREM = :LOREM WHERE id = :id;`
-	return tr.PersistNamedCtx(ctx, query, dp)
+	return tr.PersistNamedCtx(ctx, `DELETE FROM delivery_point_user WHERE user_id=:user_id;`, dp)
 }
 
 func (dp *DeliveryPointUser) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date time.Time) (err error) {
@@ -72,7 +58,7 @@ func (dp *DeliveryPointUser) ApplyUpdatedAt(tr *db.Transaction, ctx context.Cont
 	dp.UpdatedAt = date
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `UPDATE delivery_point_user SET updated_at = :updated_at WHERE id = :id`, dp)
+	return tr.PersistNamedCtx(ctx, `UPDATE delivery_point_user SET updated_at = :updated_at WHERE user_id = :user_id`, dp)
 }
 
 func rollbackIfError(tr *db.Transaction, err *error) {

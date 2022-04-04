@@ -2,9 +2,14 @@ package attachUserToPoint
 
 import (
 	"context"
+	"database/sql"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/storage/db"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/storage/db/model/deliveryPointUser"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/storage/db/model/types"
+	"time"
 
-	pb "github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/proto/deliveryPointUser"
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/utils"
+	pb "github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/proto/deliveryPointUser"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -14,7 +19,30 @@ func Handle(ctx context.Context, req *pb.AttachUserToPointRequest) (*pb.Empty, e
 		return nil, err
 	}
 
-	userId, _ := 
+	userId, _ := types.NewUuidType(req.UserId, false)
+	deliveryPointId, _ := types.NewUuidType(req.DeliveryPointId, false)
+	createdAt := time.Now()
+	model := deliveryPointUser.DeliveryPointUser{
+		UserId:          *userId,
+		DeliveryPointId: *deliveryPointId,
+		CreatedAt:       createdAt,
+		UpdatedAt:       createdAt,
+	}
+
+	tr, err := db.NewTransaction(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
+	if err != nil {
+		return nil, err
+	}
+
+	err = model.Add(ctx, tr)
+	if err != nil {
+		return nil, err
+	}
+
+	err = tr.Flush()
+	if err != nil {
+		return nil, err
+	}
 
 	return &pb.Empty{}, nil
 }

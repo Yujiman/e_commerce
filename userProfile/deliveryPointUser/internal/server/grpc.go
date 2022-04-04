@@ -4,9 +4,9 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/config"
-	pb "github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/proto/deliveryPointUser"
-	"github.com/Yujiman/e_commerce/goods/userProfile/deliveryPointUser/internal/utils"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/config"
+	pb "github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/proto/deliveryPointUser"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPointUser/internal/utils"
 
 	"google.golang.org/grpc"
 )
