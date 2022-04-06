@@ -10,6 +10,8 @@ import (
 	cityModel "github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db/model/city"
 	"github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/userProfile/city/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
@@ -25,8 +27,8 @@ func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 		Id:        *newId,
 		CreatedAt: createdAt,
 		UpdatedAt: createdAt,
-		NameRu:    "",
-		NameEn:    "",
+		NameRu:    request.NameRu,
+		NameEn:    request.NameEn,
 	}
 
 	// Adding...
@@ -47,14 +49,12 @@ func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 }
 
 func validate(req *pb.AddRequest) error {
-	// TODO Validate!
-	//if req.LOREM_ID == "" {
-	//	return status.Error(codes.Code(400), "LOREM_ID value is empty.")
-	//}
-	//
-	//if err := utils.CheckUuid(req.LOREM_ID); err != nil {
-	//	return status.Error(codes.Code(400), "LOREM_ID must be UUID type.")
-	//}
+	if req.NameRu == "" {
+		return status.Error(codes.Code(400), "name_ru not be empty.")
+	}
 
+	if req.NameEn == "" {
+		return status.Error(codes.Code(400), "name_en not be empty.")
+	}
 	return nil
 }

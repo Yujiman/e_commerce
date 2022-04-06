@@ -20,7 +20,7 @@ type City struct {
 }
 
 func (city *City) isRequiredEmpty() bool {
-	return city.Id.String() == "" // TODO Add your checking values ...
+	return city.Id.String() == "" || city.NameRu == "" || city.NameEn == ""
 }
 
 func (city *City) Add(ctx context.Context, tr *db.Transaction) (err error) {
@@ -35,8 +35,8 @@ func (city *City) Add(ctx context.Context, tr *db.Transaction) (err error) {
 	city.UpdatedAt = city.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO city(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO city(id, created_at, updated_at, name_ru, name_en)
+			 VALUES(:id, :created_at, :updated_at, :name_ru, :name_en);`
 
 	return tr.PersistNamedCtx(ctx, query, city)
 }
