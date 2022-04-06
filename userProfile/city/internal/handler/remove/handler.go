@@ -8,6 +8,9 @@ import (
 	"github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db"
 	cityModel "github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db/model/city"
 	"github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db/model/types"
+	"github.com/Yujiman/e_commerce/userProfile/city/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Handle(ctx context.Context, request *pb.RemoveRequest) (*pb.UUID, error) {
@@ -16,15 +19,12 @@ func Handle(ctx context.Context, request *pb.RemoveRequest) (*pb.UUID, error) {
 		return nil, err
 	}
 
-	id, err := types.NewUuidType(request.CityId, false)
-	if err != nil {
-		return nil, err
-	}
+	cityId, _ := types.NewUuidType(request.CityId, false)
 
 	// Getting Entity
 	repository := cityModel.NewCityRepository()
 
-	city, err := repository.GetById(ctx, *id)
+	city, err := repository.GetById(ctx, *cityId)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,12 @@ func Handle(ctx context.Context, request *pb.RemoveRequest) (*pb.UUID, error) {
 }
 
 func validate(request *pb.RemoveRequest) error {
-	//TODO
+	if request.CityId == "" {
+		return status.Error(codes.Code(400), "city_id can't be empty.")
+	}
 
+	if err := utils.CheckUuid(request.CityId); err != nil {
+		return status.Error(codes.Code(400), "city_id must be uuid type.")
+	}
 	return nil
 }
