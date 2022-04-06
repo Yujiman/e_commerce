@@ -71,3 +71,15 @@ services:
     ports:
       - "5037:5432"
     restart: always
+
+  postgre__e-commerce.userProfile.deliveryPoint:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    volumes:
+      - /postgre__e-commerce.userProfile.deliveryPoint:/var/lib/postgresql/data
+    ports:
+      - "5038:5432"
+    restart: always

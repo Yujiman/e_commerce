@@ -10,6 +10,8 @@ import (
 	deliveryPointModel "github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/storage/db/model/deliveryPoint"
 	"github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
@@ -21,13 +23,15 @@ func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 	//Creating
 	newId, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
 	createdAt := time.Now()
+	cityId, _ := types.NewUuidType(request.CityId, false)
+
 	newDeliveryPoint := deliveryPointModel.DeliveryPoint{
 		Id:        *newId,
 		CreatedAt: createdAt,
 		UpdatedAt: createdAt,
-		CityId:    types.UuidType{},
-		Name:      "",
-		Address:   "",
+		CityId:    *cityId,
+		Name:      request.Name,
+		Address:   request.Address,
 	}
 
 	// Adding...
@@ -48,14 +52,20 @@ func Handle(ctx context.Context, request *pb.AddRequest) (*pb.UUID, error) {
 }
 
 func validate(req *pb.AddRequest) error {
-	// TODO Validate!
-	//if req.LOREM_ID == "" {
-	//	return status.Error(codes.Code(400), "LOREM_ID value is empty.")
-	//}
-	//
-	//if err := utils.CheckUuid(req.LOREM_ID); err != nil {
-	//	return status.Error(codes.Code(400), "LOREM_ID must be UUID type.")
-	//}
+	if req.CityId == "" {
+		return status.Error(codes.Code(400), "city_id value is empty.")
+	}
+	if err := utils.CheckUuid(req.CityId); err != nil {
+		return status.Error(codes.Code(400), "city_id must be uuid type.")
+	}
+
+	if req.Name == "" {
+		return status.Error(codes.Code(400), "name can't be empty.")
+	}
+
+	if req.Address == "" {
+		return status.Error(codes.Code(400), "address can't be empty.")
+	}
 
 	return nil
 }

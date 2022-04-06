@@ -20,61 +20,75 @@ type DeliveryPoint struct {
 	Address   string         `db:"address"`
 }
 
-func (deliveryPoint *DeliveryPoint) isRequiredEmpty() bool {
-	return deliveryPoint.Id.String() == "" // TODO Add your checking values ...
+func (dp *DeliveryPoint) isRequiredEmpty() bool {
+	return dp.Id.String() == "" || dp.Name == "" || dp.Address == "" || dp.CityId.String() == ""
 }
 
-func (deliveryPoint *DeliveryPoint) Add(ctx context.Context, tr *db.Transaction) (err error) {
+func (dp *DeliveryPoint) Add(ctx context.Context, tr *db.Transaction) (err error) {
 	defer rollbackIfError(tr, &err)
 
-	if deliveryPoint.isRequiredEmpty() {
+	if dp.isRequiredEmpty() {
 		return status.Error(codes.Code(409), "DeliveryPoint not fill required params.")
 	}
 
 	// Convert time to UTC
-	deliveryPoint.CreatedAt = deliveryPoint.CreatedAt.UTC()
-	deliveryPoint.UpdatedAt = deliveryPoint.UpdatedAt.UTC()
+	dp.CreatedAt = dp.CreatedAt.UTC()
+	dp.UpdatedAt = dp.UpdatedAt.UTC()
 
 	// language=PostgreSQL
-	query := `INSERT INTO delivery_point(LOREM)
-			 VALUES(:LOREM);`
+	query := `INSERT INTO delivery_point(id, created_at, updated_at, city_id, name, address)
+			 VALUES(:id, :created_at, :updated_at, :city_id, :name, :address);`
 
-	return tr.PersistNamedCtx(ctx, query, deliveryPoint)
+	return tr.PersistNamedCtx(ctx, query, dp)
 }
 
-func (deliveryPoint *DeliveryPoint) Remove(ctx context.Context, tr *db.Transaction) (err error) {
+func (dp *DeliveryPoint) Remove(ctx context.Context, tr *db.Transaction) (err error) {
 	defer rollbackIfError(tr, &err)
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `DELETE FROM delivery_point WHERE id=:id;`, deliveryPoint)
+	return tr.PersistNamedCtx(ctx, `DELETE FROM delivery_point WHERE id=:id;`, dp)
 }
 
-//func (deliveryPoint *DeliveryPoint) ChangeLOREM(ctx context.Context, tr *db.Transaction, LOREM string) (err error) {
-//	defer rollbackIfError(tr, &err)
-//
-//	if deliveryPoint.LOREM == LOREM {
-//		return status.Error(codes.Code(409), "LOREM already same.")
-//	}
-//
-//	deliveryPoint.LOREM = LOREM
-//
-//	// language=PostgreSQL
-//	query := `UPDATE delivery_point SET LOREM = :LOREM WHERE id = :id;`
-//	return tr.PersistNamedCtx(ctx, query, deliveryPoint)
-//}
+func (dp *DeliveryPoint) ChangeName(ctx context.Context, tr *db.Transaction, newName string) (err error) {
+	defer rollbackIfError(tr, &err)
 
-func (deliveryPoint *DeliveryPoint) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date time.Time) (err error) {
+	if dp.Name == newName {
+		return status.Error(codes.Code(409), "name already same.")
+	}
+
+	dp.Name = newName
+
+	// language=PostgreSQL
+	query := `UPDATE delivery_point SET name = :name WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, dp)
+}
+
+func (dp *DeliveryPoint) ChangeAddress(ctx context.Context, tr *db.Transaction, newAddress string) (err error) {
+	defer rollbackIfError(tr, &err)
+
+	if dp.Address == newAddress {
+		return status.Error(codes.Code(409), "address already same.")
+	}
+
+	dp.Address = newAddress
+
+	// language=PostgreSQL
+	query := `UPDATE delivery_point SET name = :name WHERE id = :id;`
+	return tr.PersistNamedCtx(ctx, query, dp)
+}
+
+func (dp *DeliveryPoint) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date time.Time) (err error) {
 	defer rollbackIfError(tr, &err)
 
 	date = date.UTC()
-	if deliveryPoint.UpdatedAt.After(date) {
+	if dp.UpdatedAt.After(date) {
 		return status.Error(codes.Code(409), "DeliveryPoint new updated_at value before old.")
 	}
 
-	deliveryPoint.UpdatedAt = date
+	dp.UpdatedAt = date
 
 	// language=PostgreSQL
-	return tr.PersistNamedCtx(ctx, `UPDATE delivery_point SET updated_at = :updated_at WHERE id = :id`, deliveryPoint)
+	return tr.PersistNamedCtx(ctx, `UPDATE delivery_point SET updated_at = :updated_at WHERE id = :id`, dp)
 }
 
 func rollbackIfError(tr *db.Transaction, err *error) {

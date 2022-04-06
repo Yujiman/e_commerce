@@ -3,6 +3,7 @@ package deliveryPoint
 import (
 	"context"
 	"database/sql"
+	"strings"
 
 	"github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/storage/db"
 	"github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/storage/db/model/types"
@@ -14,8 +15,9 @@ import (
 )
 
 type FindDTO struct {
-	// TODO Fill!
-	//Delivery        *bool
+	CityId  *types.UuidType
+	Name    *string
+	Address *string
 }
 
 type Repository struct {
@@ -135,22 +137,21 @@ func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset ui
 }
 
 func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuilder {
-	// TODO Fill!
-	//if dto.CityId.String() != "" { // Equal
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("city_id = :city_id").
-	//		SetParameter(":city_id", dto.CityId)
-	//}
-	//if dto.ViewName != "" { // Like
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("LOWER(view_name) LIKE :view_name").
-	//		SetParameter(":view_name", "%"+strings.ToLower(dto.ViewName)+"%")
-	//}
-	//if dto.Delivery != nil { // Nullable
-	//	queryBuilder = queryBuilder.
-	//		OrWhere("delivery = :delivery").
-	//		SetParameter(":delivery", *dto.Delivery)
-	//}
+	if dto.Name != nil { // Like
+		queryBuilder = queryBuilder.
+			OrWhere("LOWER(name) LIKE :name").
+			SetParameter(":name", "%"+strings.ToLower(*dto.Name)+"%")
+	}
+	if dto.Address != nil { // Like
+		queryBuilder = queryBuilder.
+			OrWhere("LOWER(address) LIKE :address").
+			SetParameter(":address", "%"+strings.ToLower(*dto.Address)+"%")
+	}
+	if dto.CityId != nil { // Nullable
+		queryBuilder = queryBuilder.
+			OrWhere("city_id = :city_id").
+			SetParameter(":city_id", *dto.CityId)
+	}
 
 	return queryBuilder
 }
