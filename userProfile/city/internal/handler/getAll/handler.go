@@ -41,7 +41,7 @@ func Handle(ctx context.Context, request *pb.GetAllRequest) (*pb.Cities, error) 
 		return nil, err
 	}
 
-	cities := convertCitysToProto(cityItems)
+	cities := convertCitiesToProto(cityItems)
 
 	return &pb.Cities{
 		PagesCount: pager.GetPagesCount(),
@@ -51,16 +51,16 @@ func Handle(ctx context.Context, request *pb.GetAllRequest) (*pb.Cities, error) 
 	}, nil
 }
 
-func convertCitysToProto(citys []*city.City) []*pb.City {
+func convertCitiesToProto(cities []*city.City) []*pb.City {
 	var result []*pb.City
 
-	for _, item := range citys {
+	for _, item := range cities {
 		preparedCity := pb.City{
 			Id:        item.Id.String(),
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			NameRu:    "",
-			NameEn:    "",
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			NameRu:    item.NameEn,
+			NameEn:    item.NameEn,
 		}
 
 		result = append(result, &preparedCity)
