@@ -5,12 +5,19 @@ import (
 
 	pb "github.com/Yujiman/e_commerce/userProfile/city/internal/proto/city"
 	cityModel "github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db/model/city"
+	"github.com/Yujiman/e_commerce/userProfile/city/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/userProfile/city/internal/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const PerPage = 10
 
 func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Cities, error) {
+	if err := validation(request); err != nil {
+		return nil, err
+	}
+
 	if request.Pagination == nil {
 		request.Pagination = &pb.PaginationRequest{}
 	}
@@ -63,14 +70,34 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Cities, error) {
 	}, nil
 }
 
-func bindDTO(request *pb.FindRequest) *cityModel.FindDTO {
-	//var delivery *bool
-	//if request.Delivery != nil {
-	//	delivery = &request.Delivery.Value
-	//}
-
-	return &cityModel.FindDTO{
-		// TODO Fill!
-		//Delivery:        delivery,
+func validation(request *pb.FindRequest) error {
+	if request.CityId == "" && request.NameRu == "" && request.NameEn == "" {
+		return status.Error(codes.Code(400), "city_id or name_ru or name_en can't be empty.")
 	}
+
+	if request.CityId != "" {
+		if err := utils.CheckUuid(request.CityId); err != nil {
+			return status.Error(codes.Code(400), "city_id must be uuid type.")
+		}
+	}
+	return nil
+}
+
+func bindDTO(request *pb.FindRequest) *cityModel.FindDTO {
+	dto := &cityModel.FindDTO{}
+
+	if request.CityId != "" {
+		id, _ := types.NewUuidType(request.CityId, false)
+		dto.CityId = id
+	}
+
+	if request.NameRu != "" {
+		dto.NameRu = &request.NameRu
+	}
+
+	if request.NameEn != "" {
+		dto.NameEn = &request.NameEn
+	}
+
+	return dto
 }
