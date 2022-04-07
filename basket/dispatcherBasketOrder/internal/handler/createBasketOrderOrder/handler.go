@@ -31,6 +31,11 @@ func Handle(ctx context.Context, req *pb.CreateBasketOrderOrderRequest) (*pb.UUI
 		return nil, err
 	}
 
+	_, err = basket.Remove(ctx, basketModel.Id)
+	if err != nil {
+		return nil, err
+	}
+
 	return &pb.UUID{Value: orderId}, nil
 }
 

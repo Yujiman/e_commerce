@@ -34,3 +34,26 @@ func GetByUser(ctx context.Context, userId string) (*pb.Basket, error) {
 
 	return resp, nil
 }
+
+func Remove(ctx context.Context, basketId string) (*string, error) {
+	// Create gRPC connection
+	addr := config.GetConfig().ServicesParams.Basket
+	connection, err := service.GetGrpcClientConnection(addr)
+	defer utils.MuteCloseClientConn(connection)
+	if err != nil {
+		return nil, err
+	}
+
+	// Call gRPC method...
+	client := pb.NewBasketServiceClient(connection)
+	resp, err := client.RemoveBasket(ctx, &pb.RemoveBasketRequest{BasketId: basketId})
+	if ctx.Err() == context.DeadlineExceeded {
+		return nil, status.Error(codes.Code(503), "Client to Basket Remove() service timeout exceeded.")
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &resp.Value, nil
+}
