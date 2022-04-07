@@ -1,4 +1,4 @@
-package remove
+package update
 
 import (
 	"context"
@@ -13,13 +13,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func Handle(ctx context.Context, request *pb.RemoveRequest) (*pb.UUID, error) {
+func Handle(ctx context.Context, req *pb.UpdateRequest) (*pb.UUID, error) {
 	// Validation
-	if err := validate(request); err != nil {
+	if err := validate(req); err != nil {
 		return nil, err
 	}
 
-	id, err := types.NewUuidType(request.DeliveryPoint, false)
+	id, err := types.NewUuidType(req.DeliveryPointId, false)
 	if err != nil {
 		return nil, err
 	}
@@ -38,22 +38,32 @@ func Handle(ctx context.Context, request *pb.RemoveRequest) (*pb.UUID, error) {
 		return nil, err
 	}
 
-	err = deliveryPoint.Remove(ctx, tr)
-	if err != nil {
-		return nil, err
+	if req.Address != "" {
+		err = deliveryPoint.ChangeAddress(ctx, tr, req.Address)
+		if err != nil {
+			return nil, err
+		}
 	}
-
+	if req.Name != "" {
+		err = deliveryPoint.ChangeName(ctx, tr, req.Name)
+		if err != nil {
+			return nil, err
+		}
+	}
 	err = tr.Flush()
 	if err != nil {
 		return nil, err
 	}
-	return &pb.UUID{Value: request.DeliveryPoint}, nil
+	return &pb.UUID{Value: req.DeliveryPointId}, nil
 }
 
-func validate(req *pb.RemoveRequest) error {
-	if err := utils.CheckUuid(req.DeliveryPoint); err != nil {
-		return status.Error(codes.Code(400), "delivery_point must be uuid type.")
+func validate(req *pb.UpdateRequest) error {
+	if err := utils.CheckUuid(req.DeliveryPointId); err != nil {
+		return status.Error(codes.Code(400), "delivery_point_id must be uuid type.")
 	}
 
+	if req.Address == "" && req.Name == "" {
+		return status.Error(codes.Code(400), "address or name can't be empty.")
+	}
 	return nil
 }

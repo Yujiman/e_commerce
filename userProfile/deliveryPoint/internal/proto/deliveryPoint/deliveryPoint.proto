@@ -52,8 +52,9 @@ message RemoveRequest {
 }
 
 message UpdateRequest{
-  string name = 1;
-  string address =2;
+  string delivery_point_id =1;
+  string name = 2;
+  string address =3;
 }
 
 

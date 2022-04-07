@@ -57,11 +57,11 @@ func convertDeliveryPointsToProto(deliveryPoints []*deliveryPoint.DeliveryPoint)
 	for _, item := range deliveryPoints {
 		preparedDeliveryPoint := pb.DeliveryPoint{
 			Id:        item.Id.String(),
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			CityId:    "",
-			Name:      "",
-			Address:   "",
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			CityId:    item.CityId.String(),
+			Name:      item.Name,
+			Address:   item.Address,
 		}
 
 		result = append(result, &preparedDeliveryPoint)

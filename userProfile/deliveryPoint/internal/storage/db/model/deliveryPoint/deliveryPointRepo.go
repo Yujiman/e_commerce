@@ -15,9 +15,10 @@ import (
 )
 
 type FindDTO struct {
-	CityId  *types.UuidType
-	Name    *string
-	Address *string
+	DeliveryPointId *types.UuidType
+	CityId          *types.UuidType
+	Name            *string
+	Address         *string
 }
 
 type Repository struct {
@@ -151,6 +152,11 @@ func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuil
 		queryBuilder = queryBuilder.
 			OrWhere("city_id = :city_id").
 			SetParameter(":city_id", *dto.CityId)
+	}
+	if dto.DeliveryPointId != nil { // Nullable
+		queryBuilder = queryBuilder.
+			OrWhere("id = :id").
+			SetParameter(":id", *dto.DeliveryPointId)
 	}
 
 	return queryBuilder

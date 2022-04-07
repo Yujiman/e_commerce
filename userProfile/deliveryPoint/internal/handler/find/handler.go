@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/proto/deliveryPoint"
 	deliveryPointModel "github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/storage/db/model/deliveryPoint"
+	"github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/storage/db/model/types"
 	"github.com/Yujiman/e_commerce/userProfile/deliveryPoint/internal/utils"
 )
 
@@ -48,11 +49,11 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.DeliveryPoints, e
 	for _, item := range deliveryPointItems {
 		deliveryPoints = append(deliveryPoints, &pb.DeliveryPoint{
 			Id:        item.Id.String(),
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			CityId:    "",
-			Name:      "",
-			Address:   "",
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			CityId:    item.CityId.String(),
+			Name:      item.Name,
+			Address:   item.Address,
 		})
 	}
 
@@ -64,14 +65,22 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.DeliveryPoints, e
 	}, nil
 }
 
-func bindDTO(request *pb.FindRequest) *deliveryPointModel.FindDTO {
-	//var delivery *bool
-	//if request.Delivery != nil {
-	//	delivery = &request.Delivery.Value
-	//}
+func bindDTO(req *pb.FindRequest) *deliveryPointModel.FindDTO {
+	dto := &deliveryPointModel.FindDTO{}
 
-	return &deliveryPointModel.FindDTO{
-		// TODO Fill!
-		//Delivery:        delivery,
+	if req.Id != "" {
+		id, _ := types.NewUuidType(req.Id, false)
+		dto.DeliveryPointId = id
 	}
+	if req.CityId != "" {
+		id, _ := types.NewUuidType(req.CityId, false)
+		dto.CityId = id
+	}
+	if req.Name != "" {
+		dto.Name = &req.Name
+	}
+	if req.Address != "" {
+		dto.Address = &req.Address
+	}
+	return dto
 }
