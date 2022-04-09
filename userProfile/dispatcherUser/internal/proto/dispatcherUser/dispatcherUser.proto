@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package dispatcherUser;
+
+option go_package = "/;dispatcherUser";
+
+service DispatcherUserService {
+    rpc AddUser (AddUserRequest) returns (UUID);
+    rpc ChangeDeliveryPoint (ChangeDeliveryPointRequest) returns (UUID);
+    rpc ChangeCityId (ChangeCityIdRequest) returns (UUID);
+}
+
+// User
+message AddUserRequest {
+    string id = 1;
+    string phone = 2;
+    string firstname = 3;
+    string lastname = 4;
+    string patronymic = 5;
+    string city_id = 6;
+}
+
+message ChangeDeliveryPointRequest {
+    string user_id = 1;
+    string delivery_point = 2;
+}
+
+message ChangeCityIdRequest {
+    string user_id = 1;
+    string city_id = 2;
+}
+
+
+// Base
+message UUID {
+    string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+    bool value = 1;
+}
