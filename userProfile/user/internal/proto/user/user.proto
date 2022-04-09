@@ -5,7 +5,7 @@ package user;
 option go_package = "/;user";
 
 service UserService {
-  rpc Add (AddRequest) returns (UUID);
+  rpc AddWithId (AddWithIdRequest) returns (UUID);
   rpc GetById (GetByIdRequest) returns (User);
   rpc GetAll (GetAllRequest) returns (Users);
   rpc Update (UpdateRequest) returns (UUID);
@@ -31,12 +31,13 @@ message Users {
   repeated User users = 4;
 }
 
-message AddRequest{
-  string phone = 1;
-  string firstname =2;
-  string lastname = 3;
-  string patronymic =4;
-  string city_id = 5;
+message AddWithIdRequest{
+  string id = 1;
+  string phone = 2;
+  string firstname =3;
+  string lastname = 4;
+  string patronymic =5;
+  string city_id = 6;
 }
 
 message GetByIdRequest {

@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*UUID, error)
+	AddWithId(ctx context.Context, in *AddWithIdRequest, opts ...grpc.CallOption) (*UUID, error)
 	GetById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*User, error)
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*Users, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UUID, error)
@@ -37,9 +37,9 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
 }
 
-func (c *userServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*UUID, error) {
+func (c *userServiceClient) AddWithId(ctx context.Context, in *AddWithIdRequest, opts ...grpc.CallOption) (*UUID, error) {
 	out := new(UUID)
-	err := c.cc.Invoke(ctx, "/user.UserService/Add", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.UserService/AddWithId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (c *userServiceClient) Remove(ctx context.Context, in *RemoveRequest, opts 
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
-	Add(context.Context, *AddRequest) (*UUID, error)
+	AddWithId(context.Context, *AddWithIdRequest) (*UUID, error)
 	GetById(context.Context, *GetByIdRequest) (*User, error)
 	GetAll(context.Context, *GetAllRequest) (*Users, error)
 	Update(context.Context, *UpdateRequest) (*UUID, error)
@@ -98,8 +98,8 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) Add(context.Context, *AddRequest) (*UUID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
+func (UnimplementedUserServiceServer) AddWithId(context.Context, *AddWithIdRequest) (*UUID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddWithId not implemented")
 }
 func (UnimplementedUserServiceServer) GetById(context.Context, *GetByIdRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
@@ -126,20 +126,20 @@ func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
 	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _UserService_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddRequest)
+func _UserService_AddWithId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddWithIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).Add(ctx, in)
+		return srv.(UserServiceServer).AddWithId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.UserService/Add",
+		FullMethod: "/user.UserService/AddWithId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Add(ctx, req.(*AddRequest))
+		return srv.(UserServiceServer).AddWithId(ctx, req.(*AddWithIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -224,8 +224,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Add",
-			Handler:    _UserService_Add_Handler,
+			MethodName: "AddWithId",
+			Handler:    _UserService_AddWithId_Handler,
 		},
 		{
 			MethodName: "GetById",
