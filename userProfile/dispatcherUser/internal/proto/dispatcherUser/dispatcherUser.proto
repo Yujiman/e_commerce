@@ -18,6 +18,7 @@ message AddUserRequest {
     string lastname = 4;
     string patronymic = 5;
     string city_id = 6;
+    string delivery_point_id =7;
 }
 
 message ChangeDeliveryPointRequest {
