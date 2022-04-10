@@ -149,8 +149,8 @@ func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuil
 	}
 	if dto.CityId != nil { // Nullable
 		queryBuilder = queryBuilder.
-			OrWhere("city_id = :city_id").
-			SetParameter(":city_id", *dto.CityId)
+			OrWhere("id = :id").
+			SetParameter(":id", *dto.CityId)
 	}
 
 	return queryBuilder

@@ -55,10 +55,10 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Cities, error) {
 	for _, item := range cityItems {
 		cities = append(cities, &pb.City{
 			Id:        item.Id.String(),
-			CreatedAt: 0,
-			UpdatedAt: 0,
-			NameRu:    "",
-			NameEn:    "",
+			CreatedAt: item.CreatedAt.Unix(),
+			UpdatedAt: item.UpdatedAt.Unix(),
+			NameRu:    item.NameRu,
+			NameEn:    item.NameEn,
 		})
 	}
 
