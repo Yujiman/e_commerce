@@ -28,6 +28,5 @@ func Handle(ctx context.Context, req *pb.ChangeDeliveryPointRequest) (*pb.UUID, 
 	if err != nil {
 		return nil, err
 	}
-
 	return &pb.UUID{Value: req.UserId}, nil
 }

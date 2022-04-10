@@ -29,7 +29,6 @@ func HasDeliveryPoint(ctx context.Context, deliveryPointId string) (bool, error)
 	if ctx.Err() == context.DeadlineExceeded {
 		return false, status.Error(codes.Code(503), "Client to DispatcherUser HasDeliveryPoint() service timeout exceeded.")
 	}
-
 	if err != nil {
 		return false, err
 	}
