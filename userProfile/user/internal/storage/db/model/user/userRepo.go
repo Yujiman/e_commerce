@@ -35,7 +35,7 @@ func (repo *Repository) GetAll(ctx context.Context, limit, offset uint32) ([]*Us
 		sqlLimit = sql.NullInt32{Int32: int32(limit), Valid: true}
 	}
 
-	query := `SELECT * FROM user ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
+	query := `SELECT * FROM "user" ORDER BY created_at DESC LIMIT $1 OFFSET $2;`
 
 	err := repo.DbCon.SelectContext(ctx, &users, query, sqlLimit, offset)
 	switch err {
@@ -50,7 +50,7 @@ func (repo *Repository) GetAll(ctx context.Context, limit, offset uint32) ([]*Us
 func (repo *Repository) GetCountAll(ctx context.Context) (uint32, error) {
 	var count uint32
 
-	query := `SELECT COUNT(*) FROM user;`
+	query := `SELECT COUNT(*) FROM "user";`
 
 	err := repo.DbCon.GetContext(ctx, &count, query)
 	if err != nil {
@@ -83,7 +83,7 @@ func (repo *Repository) GetCountAllForFind(ctx context.Context, dto *FindDTO) (u
 func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*User, error) {
 	user := &User{}
 
-	query := `SELECT * FROM user WHERE id = $1;`
+	query := `SELECT * FROM "user" WHERE id = $1;`
 
 	err := repo.DbCon.GetContext(ctx, user, query, id)
 	switch err {
@@ -100,7 +100,7 @@ func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*User, 
 func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, error) {
 	var has bool
 
-	query := `SELECT EXISTS(SELECT 1 FROM user WHERE id = $1);`
+	query := `SELECT EXISTS(SELECT 1 FROM "user" WHERE id = $1);`
 
 	err := repo.DbCon.GetContext(ctx, &has, query, id)
 	if err != nil {
