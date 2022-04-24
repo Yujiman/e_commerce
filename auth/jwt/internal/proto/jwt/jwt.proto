@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package jwt;
+
+// "directory/;package_name"
+option go_package = "/;jwt";
+
+service Jwt {
+  rpc CreateTokens (CreateTokensRequest) returns (Tokens);
+  rpc RefreshToken (RefreshTokenRequest) returns (Tokens);
+  rpc Logout (LogoutRequest) returns (Empty);
+  rpc RemoveAllByUser (RemoveAllByUserRequest) returns (Empty);
+
+  rpc VerifyAccessToken (VerifyTokenRequest) returns (TokenData);
+}
+
+message CreateTokensRequest {
+  string user_id = 1;
+  string scopes = 3;
+}
+
+message VerifyTokenRequest {
+  string access_token = 1;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message LogoutRequest {
+  string access_token = 1;
+}
+
+message LogoutAllRequest {
+  string access_token = 1;
+}
+
+message RemoveAllByUserRequest {
+  string user_id = 1;
+}
+
+///////
+
+message Empty {}
+
+message TokenData {
+  string user_id = 1;
+  string scopes = 2;
+}
+
+message Tokens {
+  string token_type = 1;
+  string access_token = 2;
+  int64 expires_access_at = 3;
+  string refresh_token = 4;
+  int64 expires_refresh_at = 5;
+}
