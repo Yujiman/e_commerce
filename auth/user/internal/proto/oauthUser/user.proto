@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package oauthUser;
+
+// "directory/;package_name"
+option go_package = "/;oauthUser";
+
+service OAuthUser {
+  rpc AddWithId (AddWithIdRequest) returns (Empty);
+  rpc Add (AddRequest) returns (UUID);
+  rpc Update (UpdateRequest) returns (Empty);
+  rpc UpdateRole (UpdateRoleRequest) returns (Empty);
+  rpc Remove (RemoveRequest) returns (Empty);
+
+  rpc GetById (GetByIdRequest) returns (User);
+  rpc GetByUsername (GetByUsernameRequest) returns (User);
+}
+
+message AddWithIdRequest {
+  string id = 1;
+  string phone = 2;
+  string email = 3;
+  string login = 4;
+  string password_hash = 5;
+  string status = 6;
+  string role_id= 7;
+}
+
+message AddRequest {
+  string phone = 1;
+  string email = 2;
+  string login = 3;
+  string password_hash = 4;
+  string status = 5;
+  string role_id= 6;
+}
+
+message UpdateRequest {
+  string user_id = 1;
+  string phone = 2;
+  string email = 3;
+  string login = 4;
+  string password_hash = 5;
+  string status = 6;
+}
+
+message UpdateRoleRequest {
+  string user_id = 1;
+  string role_id= 3;
+}
+
+message RemoveRequest {
+  string user_id = 1;
+}
+
+message GetByIdRequest {
+  string user_id = 1;
+}
+
+message GetByUsernameRequest {
+  string username = 1;
+}
+
+
+// Responses
+message UUID {
+  string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+  bool exist = 1;
+}
+
+message User {
+  string id = 1;
+  string phone = 2;
+  string email = 3;
+  string login = 4;
+  string passwordHash = 5;
+  string status = 6;
+  string role_id = 7;
+}
+
+message Users {
+  uint32 pages_count = 1;
+  uint32 total_items = 2;
+  uint32 per_page = 3;
+  repeated User users = 4;
+}
