@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package authorize;
+
+// "directory/;package_name"
+option go_package = "/;authorize";
+
+service AuthorizeService {
+  rpc AuthByPasswordDomain (AuthByPasswordDomainRequest) returns (TokensWithUserData);
+  rpc AuthByRefresh (AuthByRefreshRequest) returns (Tokens);
+}
+
+message AuthByPasswordDomainRequest {
+  string username = 1;
+  string password = 2;
+  string domain_url = 3;
+}
+
+message AuthByRefreshRequest {
+  string refresh_token = 1;
+}
+
+
+// Responses
+message TokensWithUserData {
+  string tokenType = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  int64 expires_access_at = 4;
+  int64 expires_refresh_at = 5;
+
+  string user_id = 6;
+  string user_email = 7;
+  string user_phone = 8;
+  string user_login = 9;
+  string user_role = 10;
+}
+
+message Tokens {
+  string tokenType = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  int64 expires_access_at = 4;
+  int64 expires_refresh_at = 5;
+}
