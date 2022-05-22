@@ -3,7 +3,7 @@ package refresh
 import validation "github.com/go-ozzo/ozzo-validation/v4"
 
 type DTO struct {
-	RefreshToken string `json:"x-satrap-2"`
+	RefreshToken string `json:"RefreshToken"`
 }
 
 func (dto *DTO) Validate() error {

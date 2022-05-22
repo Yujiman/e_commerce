@@ -18,7 +18,7 @@ func Handle(response http.ResponseWriter, request *http.Request) {
 	dto := &DTO{}
 
 	// Filling DTO from request
-	dto.RefreshToken = request.Header.Get("x-satrap-2")
+	dto.RefreshToken = request.Header.Get("RefreshToken")
 
 	// Validate DTO
 	if !helperValidator.Validate(dto, response) {
@@ -42,8 +42,8 @@ func Handle(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	response.Header().Add("X-Satrap-1", data.AccessToken)
-	response.Header().Add("X-Satrap-2", data.RefreshToken)
+	response.Header().Add("AccessToken", data.AccessToken)
+	response.Header().Add("RefreshToken", data.RefreshToken)
 
 	// Response
 	helperHttp.JsonResponse(response, map[string]interface{}{

@@ -3,7 +3,7 @@ package check
 import validation "github.com/go-ozzo/ozzo-validation/v4"
 
 type DTO struct {
-	AccessToken string `json:"x-satrap-1"`
+	AccessToken string `json:"AccessToken"`
 }
 
 func (dto *DTO) Validate() error {

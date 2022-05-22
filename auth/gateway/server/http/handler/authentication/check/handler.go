@@ -16,7 +16,7 @@ func Handle(response http.ResponseWriter, request *http.Request) {
 	dto := &DTO{}
 
 	// Filling DTO from request
-	dto.AccessToken = request.Header.Get("x-satrap-1")
+	dto.AccessToken = request.Header.Get("AccessToken")
 
 	// Validate DTO
 	if !helperValidator.Validate(dto, response) {

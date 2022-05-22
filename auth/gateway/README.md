@@ -23,7 +23,7 @@ POST /v1/oauth/login
     HTTP/1.1 200 OK
     Status: 200 OK
     Content-Type: application/json
-    X-Satrap-1: <JWT chank 1>
+    AccessToken: <JWT chank 1>
     X-Satrap-2: <JWT chank 2>
 
 ```
@@ -51,7 +51,7 @@ GET /v1/oauth/check
 With Headers:
 
 ```
-X-Satrap-1: <JWT chank 1>
+AccessToken: <JWT chank 1>
 ```
 
 #### Response
@@ -59,7 +59,7 @@ X-Satrap-1: <JWT chank 1>
     HTTP/1.1 200 OK
     Status: 200 OK
     Content-Type: application/json
-    X-Satrap-1: <JWT chank 1>
+    AccessToken: <JWT chank 1>
 
 ```
 {
@@ -87,5 +87,5 @@ X-Satrap-2: <JWT chank 2>
     HTTP/1.1 200 OK
     Status: 200 OK
     Content-Type: application/json
-    X-Satrap-1: <New JWT chank 1>
+    AccessToken: <New JWT chank 1>
     X-Satrap-2: <New JWT chank 2>
