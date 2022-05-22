@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Yujiman/e_commerce/auth/dispatcherUser/internal/bootstrap"
-	"github.com/Yujiman/e_commerce/auth/dispatcherUser/internal/server"
+	"github.com/Yujiman/e_commerce/auth/dispatcherUser/bootstrap"
+	"github.com/Yujiman/e_commerce/auth/dispatcherUser/server"
 )
 
 func init() {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Yujiman/e_commerce/auth/authorize/internal/bootstrap"
-	"github.com/Yujiman/e_commerce/auth/authorize/internal/server"
+	"github.com/Yujiman/e_commerce/auth/authorize/bootstrap"
+	"github.com/Yujiman/e_commerce/auth/authorize/server"
 )
 
 func init() {

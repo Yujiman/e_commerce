@@ -1,6 +1,6 @@
 #######################  VARS  ##########################
 baseDir = $$(basename $$PWD)
-baseProto = internal/proto/$(baseDir)/$(baseDir).proto
+baseProto = proto/$(baseDir)/$(baseDir).proto
 
 proto-gen:
 	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ${arg}

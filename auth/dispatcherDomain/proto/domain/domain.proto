@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package domain;
+
+// "directory/;package_name"
+option go_package = "/;domain";
+
+service DomainService {
+  rpc Add (AddRequest) returns (UUID);
+  rpc Update (UpdateRequest) returns (Empty);
+  rpc Remove (RemoveRequest) returns (Empty);
+
+  rpc GetById (GetByIdRequest) returns (Domain);
+  rpc GetByUrl (GetByUrlRequest) returns (Domain);
+  rpc GetAll (GetAllRequest) returns (Domains);
+  rpc Find (FindRequest) returns (Domains);
+}
+
+message AddRequest {
+  string name = 1;
+  string url = 2;
+}
+
+message UpdateRequest {
+  string domain_id = 1;
+  string name = 2;
+  string url = 3;
+}
+
+message RemoveRequest {
+  string domain_id = 1;
+}
+
+message GetByIdRequest {
+  string domain_id = 1;
+}
+
+message GetByUrlRequest {
+  string url = 1;
+}
+
+message GetAllRequest {
+  RequestPagination pagination = 1;
+}
+
+message FindRequest {
+  string name = 1;
+  string url = 2;
+  RequestPagination pagination = 3;
+}
+
+message RequestPagination {
+  uint32 page = 1;
+  int32 limit = 2;
+  uint32 offset = 3;
+}
+
+// Responses
+message UUID {
+  string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+  bool exist = 1;
+}
+
+message Domain {
+  string id = 1;
+  string name = 2;
+  string url = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message Domains {
+  uint32 pages_count = 1;
+  uint32 total_items = 2;
+  uint32 per_page = 3;
+  repeated Domain domains = 4;
+}

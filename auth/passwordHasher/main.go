@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Yujiman/e_commerce/auth/passwordHasher/internal/bootstrap"
-	"github.com/Yujiman/e_commerce/auth/passwordHasher/internal/server"
+	"github.com/Yujiman/e_commerce/auth/passwordHasher/bootstrap"
+	"github.com/Yujiman/e_commerce/auth/passwordHasher/server"
 )
 
 func init() {

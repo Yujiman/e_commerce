@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/Yujiman/e_commerce/auth/jwt/internal/bootstrap"
-	"github.com/Yujiman/e_commerce/auth/jwt/internal/handler"
-	"github.com/Yujiman/e_commerce/auth/jwt/internal/server"
-
 	"log"
 	"sync"
 	"time"
+
+	"github.com/Yujiman/e_commerce/auth/jwt/bootstrap"
+	"github.com/Yujiman/e_commerce/auth/jwt/handler"
+	"github.com/Yujiman/e_commerce/auth/jwt/server"
 )
 
 func init() {
@@ -24,6 +24,7 @@ func main() {
 	}()
 
 	for {
+		log.Println("Check for expired tokens.")
 		err := handler.RevokeOldTokens()
 		if err != nil {
 			log.Println(err)
