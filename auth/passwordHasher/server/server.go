@@ -79,11 +79,7 @@ func InitServer() {
 		return
 	}
 
-	params, err := config.GetArgon2idParams()
-	if err != nil {
-		log.Printf("ArgonParams will be default, custom params environment error=%v\n", err)
-		params = config.GetDefaultArgon2idParams()
-	}
+	params := config.GetDefaultArgon2idParams()
 
 	grpcServer := grpc.NewServer()
 	passwordHasher.RegisterPasswordHashServer(grpcServer, &Server{params: params})

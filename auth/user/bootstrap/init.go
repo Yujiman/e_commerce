@@ -3,13 +3,9 @@ package bootstrap
 import (
 	"fmt"
 	"log"
-	"strconv"
 
-	"github.com/Yujiman/e_commerce/auth/user/config"
 	"github.com/Yujiman/e_commerce/auth/user/storage/db"
 	"github.com/Yujiman/e_commerce/auth/user/utils"
-
-	metricService "github.com/autokz/go-monitor"
 
 	"github.com/joho/godotenv"
 )
@@ -20,21 +16,6 @@ func Init() {
 		log.Panicf("Loading dotenv file failed " + err.Error())
 	}
 	log.Println("Init godotenv")
-
-	metricConf := config.GetMetricConf()
-	metricTimeout, err := strconv.Atoi(metricConf.MetricTimeout)
-	if err != nil {
-		log.Panicf("METRIC_TIMEOUT environment not valid")
-	}
-	metricService.Handle(
-		metricConf.MetricServerAddress,
-		metricConf.MetricServerPort,
-		"10s",
-		metricConf.MetricAppName,
-		metricTimeout,
-	)
-	log.Println("Init metricService")
-
 	err = migrate()
 	if err != nil {
 		log.Panicf("Migration failed: " + err.Error())

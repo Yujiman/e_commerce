@@ -7,7 +7,6 @@ import (
 
 func init() {
 	bootstrap.InitEnv("./.env")
-	bootstrap.InitMetrics()
 }
 
 func main() {
