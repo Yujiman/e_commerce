@@ -1,6 +1,8 @@
 package authByPasswordDomain
 
 import (
+	"log"
+
 	pbAggregatorUser "github.com/Yujiman/e_commerce/auth/authorize/proto/aggregatorUser"
 	pb "github.com/Yujiman/e_commerce/auth/authorize/proto/authorize"
 	pbJwt "github.com/Yujiman/e_commerce/auth/authorize/proto/jwt"
@@ -31,7 +33,7 @@ func Handle(req *pb.AuthByPasswordDomainRequest) (*pb.TokensWithUserData, error)
 	if userResp.PasswordHash == "" {
 		return nil, status.Error(codes.Code(400), "User's password is empty. Need to fill.")
 	}
-
+	log.Println(0)
 	validPass, err := passwordHasher.Validate(&pbPasswordHasher.ValidateRequest{
 		Password: req.Password,
 		Hash:     userResp.PasswordHash,
@@ -43,7 +45,7 @@ func Handle(req *pb.AuthByPasswordDomainRequest) (*pb.TokensWithUserData, error)
 	if !validPass.Valid {
 		return nil, status.Error(codes.Code(401), "User's password not valid.")
 	}
-
+	log.Println(1)
 	tokens, err := jwt.CreateTokens(&pbJwt.CreateTokensRequest{
 		UserId:   userResp.Id,
 		DomainId: userResp.Domains[0].Id,
@@ -52,7 +54,7 @@ func Handle(req *pb.AuthByPasswordDomainRequest) (*pb.TokensWithUserData, error)
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println(2)
 	return &pb.TokensWithUserData{
 		TokenType:        tokens.TokenType,
 		AccessToken:      tokens.AccessToken,

@@ -1,6 +1,7 @@
 package login
 
 import (
+	"log"
 	"net/http"
 
 	pbAggUser "github.com/Yujiman/e_commerce/auth/gateway/proto/aggregatorUser"
@@ -48,6 +49,7 @@ func Handle(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	log.Println(data)
 	response.Header().Add("AccessToken", data.AccessToken)
 	response.Header().Add("RefreshToken", data.RefreshToken)
 

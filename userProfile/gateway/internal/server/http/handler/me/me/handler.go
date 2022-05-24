@@ -1,17 +1,20 @@
 package me
 
 import (
+	"log"
 	"net/http"
 
 	helperError "github.com/Yujiman/e_commerce/userProfile/gatway/internal/server/http/helper/error"
 	helperHttp "github.com/Yujiman/e_commerce/userProfile/gatway/internal/server/http/helper/http"
 	helperValidator "github.com/Yujiman/e_commerce/userProfile/gatway/internal/server/http/helper/validator"
+	"github.com/Yujiman/e_commerce/userProfile/gatway/internal/server/http/middleware"
 	serviceuser "github.com/Yujiman/e_commerce/userProfile/gatway/internal/service/user"
 )
 
 func Handle(response http.ResponseWriter, request *http.Request) {
-	dto := &DTO{}
+	dto := &DTO{UserId: request.Header.Get(middleware.OauthUserId)}
 
+	log.Println(dto.UserId)
 	// Filling DTO from request
 	if !helperHttp.BindRequest(response, request, dto) {
 		return

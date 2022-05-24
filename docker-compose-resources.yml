@@ -1,85 +1,115 @@
 version: "3.8"
 services:
-  postgre__e-commerce.goods.item:
+  postgre__e-commerce.goods.item1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /var/postgre__e-commerce.goods.item:/var/lib/postgresql/data
+      - /var/postgre__e-commerce.goods.item1:/var/lib/postgresql/data
     ports:
       - "5032:5432"
     restart: always
 
-  postgre__e-commerce.order.order:
+  postgre__e-commerce.order.order1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /varpostgre__e-commerce.order.order:/var/lib/postgresql/data
+      - /varpostgre__e-commerce.order.orde1r:/var/lib/postgresql/data
     ports:
       - "5033:5432"
     restart: always
 
-  postgre__e-commerce.basket.basket:
+  postgre__e-commerce.basket.basket1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /postgre__e-commerce.basket.basket:/var/lib/postgresql/data
+      - /postgre__e-commerce.basket.basket1:/var/lib/postgresql/data
     ports:
       - "5034:5432"
     restart: always
 
-  postgre__e-commerce.userProfile.user:
+  postgre__e-commerce.userProfile.user1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /postgre__e-commerce.userProfile.user:/var/lib/postgresql/data
+      - /postgre__e-commerce.userProfile.user1:/var/lib/postgresql/data
     ports:
       - "5035:5432"
     restart: always
 
-  postgre__e-commerce.userProfile.delivetyPointUser:
+  postgre__e-commerce.userProfile.delivetyPointUser1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /postgre__e-commerce.userProfile.delivetyPointUser:/var/lib/postgresql/data
+      - /postgre__e-commerce.userProfile.delivetyPointUser1:/var/lib/postgresql/data
     ports:
       - "5036:5432"
     restart: always
 
-  postgre__e-commerce.userProfile.city:
+  postgre__e-commerce.userProfile.city1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /postgre__e-commerce.userProfile.city:/var/lib/postgresql/data
+      - /postgre__e-commerce.userProfile.city1:/var/lib/postgresql/data
     ports:
       - "5037:5432"
     restart: always
 
-  postgre__e-commerce.userProfile.deliveryPoint:
+  postgre__e-commerce.userProfile.deliveryPoint1:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: app
     volumes:
-      - /postgre__e-commerce.userProfile.deliveryPoint:/var/lib/postgresql/data
+      - /postgre__e-commerce.userProfile.deliveryPoint1:/var/lib/postgresql/data
     ports:
       - "5038:5432"
+    restart: always
+
+  postgre__e-commerce.auth.users-domains:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    volumes:
+      - /var/postgre__e-commerce.auth.users-domains:/var/lib/postgresql/data
+    ports:
+      - "5039:5432"
+    restart: always
+
+  postgre__e-commerce.auth.jwt:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    ports:
+      - '5040:5432'
+    volumes:
+      - /var/postgre__e-commerce.auth.jwt:/var/lib/postgresql/data
+    restart: always
+
+  redis__e-commerce.auth.jwt:
+    image: redis:alpine
+    ports:
+      - "6301:6379"
     restart: always

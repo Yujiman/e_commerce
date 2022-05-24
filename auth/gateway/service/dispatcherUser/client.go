@@ -17,7 +17,7 @@ const StatusWait = "wait"
 const StatusActive = "active"
 const StatusLocked = "locked"
 
-func CheckAccess(phone, email, login, password, userStatus string) (*string, error) {
+func CreateUser(phone, email, login, password string) (*string, error) {
 	var addr = config.GetServicesParams().DispatcherUser
 	clientConn, err := service.GetGrpcClientConnection(addr)
 	defer utils.MuteCloseClientConn(clientConn)
@@ -35,7 +35,7 @@ func CheckAccess(phone, email, login, password, userStatus string) (*string, err
 		Email:    email,
 		Login:    login,
 		Password: password,
-		Status:   userStatus,
+		Status:   StatusActive,
 	})
 
 	if ctx.Err() == context.DeadlineExceeded {

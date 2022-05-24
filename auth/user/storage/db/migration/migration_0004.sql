@@ -1,6 +1,6 @@
 INSERT INTO domain (id, name, url, created_at, updated_at)
-SELECT '6afd70e0-2b6f-46c2-9292-287cbc25de5b', 'gcc-web', 'gcc.com', NOW(), NOW()
-    WHERE NOT EXISTS (SELECT 1 FROM domain WHERE url='gcc.com');
+SELECT '6afd70e0-2b6f-46c2-9292-287cbc25de5b', 'eCommerece', 'test.com', NOW(), NOW()
+    WHERE NOT EXISTS (SELECT 1 FROM domain WHERE url='test.com');
 
 INSERT INTO users_user (id, created_at, updated_at, email, phone, login, password_hash, status)
 SELECT

@@ -19,6 +19,7 @@ func getRoutes() *http.ServeMux {
 	httpHelper.RegisterRoute(mux, &routes.AuthByRefresh)        // Auth by refresh
 	httpHelper.RegisterRoute(mux, &routes.AuthByPasswordDomain) // Auth by login
 	httpHelper.RegisterRoute(mux, &routes.AuthCheck)            // Auth check
+	httpHelper.RegisterRoute(mux, &routes.AuthRegister)         // Auth register
 
 	return mux
 }

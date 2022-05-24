@@ -1,19 +1,20 @@
 package deliveryPoint
 
 import (
-	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
+
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
 type DTO struct {
-	DeliveryPointId string `json:"delivery_point_id"`
+	UserId string
 }
 
 func (dto *DTO) Validate() error {
 
 	return validation.ValidateStruct(dto,
 		validation.Field(
-			&dto.DeliveryPointId,
+			&dto.UserId,
 			validation.Required,
 			is.UUIDv4,
 		),

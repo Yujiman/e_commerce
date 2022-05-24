@@ -36,3 +36,32 @@ func GetCity(cityId string) (*pb.City, error) {
 	}
 	return resp.Cities[0], err
 }
+
+func GetAllCity() (*pb.Cities, error) {
+	var addr = config.GetConfig().ServicesParam.City
+	clientConn, err := service.GetGrpcClientConnection(addr)
+	defer utils.MuteCloseClientConn(clientConn)
+	if err != nil {
+		return nil, status.Error(codes.Code(503), err.Error())
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+
+	client := pb.NewCityServiceClient(clientConn)
+	resp, err := client.GetAll(ctx, &pb.GetAllRequest{
+		Pagination: &pb.PaginationRequest{
+			Page:   0,
+			Limit:  -1,
+			Offset: 0,
+		},
+	})
+	if ctx.Err() == context.DeadlineExceeded {
+		return nil, status.Error(codes.Code(503), "Client to Gateway->Policy:Find service timeout exceeded.")
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, err
+}

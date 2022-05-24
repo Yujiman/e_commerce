@@ -8,7 +8,7 @@ import (
 
 type DTO struct {
 	CityId string `json:"city_id"`
-	UserId string `json:"user_id"`
+	UserId string
 }
 
 func (dto *DTO) Validate() error {

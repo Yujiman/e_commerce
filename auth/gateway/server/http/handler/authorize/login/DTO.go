@@ -1,8 +1,6 @@
 package login
 
 import (
-	"regexp"
-
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
@@ -28,7 +26,6 @@ func (dto *DTO) Validate() error {
 			&dto.Domain,
 			validation.Required,
 			validation.Length(3, 0),
-			validation.Match(regexp.MustCompile(`^([a-zA-Z0-9|-]+\.?){1,64}[[a-zA-Z0-9|-]+\.[a-zA-Z]+$`)),
 		),
 	)
 }

@@ -4,10 +4,11 @@ import (
 	"context"
 	"time"
 
-	"insurance-sales/gateway/config"
-	pbAuthentication "insurance-sales/gateway/proto/authentication"
-	"insurance-sales/gateway/service"
-	"insurance-sales/gateway/utils"
+	"github.com/Yujiman/e_commerce/userProfile/gatway/internal/config"
+	"github.com/Yujiman/e_commerce/userProfile/gatway/internal/service"
+	"github.com/Yujiman/e_commerce/userProfile/gatway/internal/utils"
+
+	pbAuthentication "github.com/Yujiman/e_commerce/userProfile/gatway/internal/proto/authentication"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
