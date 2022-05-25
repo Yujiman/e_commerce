@@ -64,7 +64,7 @@ func (repo *Repository) GetCountAll(ctx context.Context) (uint32, error) {
 func (repo *Repository) GetCountAllForFind(ctx context.Context, dto *FindDTO) (uint32, error) {
 
 	// Prepare QUERY
-	queryBuilder := db.NewQueryBuilder("basket").
+	queryBuilder := db.NewQueryBuilder("basket_item").
 		Select("COUNT(id)")
 
 	queryBuilder = fillQueryForFind(queryBuilder, dto)
@@ -114,7 +114,7 @@ func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, e
 func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset uint32) ([]*Item, error) {
 
 	// Prepare QUERY
-	queryBuilder := db.NewQueryBuilder("basket").
+	queryBuilder := db.NewQueryBuilder("basket_item").
 		Limit(limit).
 		Offset(offset).
 		OrderBy("created_at", "DESC")

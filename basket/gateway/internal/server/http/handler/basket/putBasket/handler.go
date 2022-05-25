@@ -8,6 +8,7 @@ import (
 	helperValidator "github.com/Yujiman/e_commerce/basket/gatway/internal/server/http/helper/validator"
 	"github.com/Yujiman/e_commerce/basket/gatway/internal/server/http/middleware"
 	serviceBasket "github.com/Yujiman/e_commerce/basket/gatway/internal/service/basket"
+	serviceItem "github.com/Yujiman/e_commerce/basket/gatway/internal/service/item"
 )
 
 func Handle(response http.ResponseWriter, request *http.Request) {
@@ -42,10 +43,14 @@ func Handle(response http.ResponseWriter, request *http.Request) {
 		helperHttp.ErrorResponse(err, response, helperError.GetStatusCodeErrFromGRPC(err))
 		return
 	}
-
 	dto.BasketId = basket.Id
 
-	resp, err := serviceBasket.NewClient().PutItem(dto.BasketId, dto.GoodId, dto.Quantity, dto.Price)
+	itemModel, err := serviceItem.NewClient().CreateOrder(dto.GoodId)
+	if err != nil {
+		helperHttp.ErrorResponse(err, response, helperError.GetStatusCodeErrFromGRPC(err))
+		return
+	}
+	resp, err := serviceBasket.NewClient().PutItem(dto.BasketId, dto.GoodId, dto.Quantity, itemModel.Price)
 	if err != nil {
 		helperHttp.ErrorResponse(err, response, helperError.GetStatusCodeErrFromGRPC(err))
 		return

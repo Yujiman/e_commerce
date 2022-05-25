@@ -29,7 +29,7 @@ var MeRouteGroup = httpHelper.Routes{
 			Action:     itemsByCategoty.Handle,
 		},
 		{
-			UrlPattern: "group/category/item",
+			UrlPattern: "/group/category/item",
 			Method:     httpHelper.GET_METHOD,
 			Action:     item.Handle,
 		},

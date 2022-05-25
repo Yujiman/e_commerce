@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package item;
+
+option go_package = "/;item";
+
+service ItemService {
+  rpc GetAll (GetAllRequest) returns (Items);
+  rpc Find (FindRequest) returns (Items);
+  rpc GetById (GetByIdRequest) returns (Item);
+  rpc Add (AddRequest) returns (UUID);
+  rpc Remove (RemoveRequest) returns (UUID);
+}
+
+// Entities:
+message Item {
+  string id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string brand = 4;
+  string name = 5;
+  string description = 6;
+  string image_link = 7;
+  double price = 8;
+  string category_id = 9;
+}
+
+message Items {
+  uint32 pages_count = 1;
+  uint32 total_items = 2;
+  uint32 per_page = 3;
+  repeated Item items = 4;
+}
+
+message GetByIdRequest{
+  string item_id =1;
+}
+message GetAllRequest {
+  PaginationRequest pagination = 1;
+}
+
+message FindRequest {
+  PaginationRequest pagination = 1;
+  string brand = 2;
+  string name = 3;
+  string description = 4;
+  double price = 5;
+  string category_id = 6;
+}
+
+message AddRequest {
+  string brand = 1;
+  string name = 2;
+  string description = 3;
+  string image_link = 4;
+  double price = 5;
+  string category_id = 6;
+}
+
+message RemoveRequest {
+  string  item_id = 1;
+}
+
+// Base
+message UUID {
+  string value = 1;
+}
+
+message PaginationRequest {
+  uint32 page = 1;
+  int32 limit = 2;
+  uint32 offset = 3;
+}

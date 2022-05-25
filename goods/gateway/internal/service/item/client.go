@@ -1,4 +1,4 @@
-package group
+package item
 
 import (
 	"context"
@@ -18,7 +18,7 @@ type Client struct {
 }
 
 func NewClient() *Client {
-	return &Client{addr: config.GetConfig().ServicesParam.Group}
+	return &Client{addr: config.GetConfig().ServicesParam.Items}
 }
 
 func (c Client) GetItem(itemId string) (*pb.Item, error) {

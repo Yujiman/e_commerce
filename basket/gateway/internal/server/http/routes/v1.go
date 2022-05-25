@@ -10,7 +10,7 @@ import (
 	"github.com/autokz/go-http-server-helper/httpHelper"
 )
 
-var MeRouteGroup = httpHelper.Routes{
+var BasketRouteGroup = httpHelper.Routes{
 	UrlPrefix: "/v1/basket",
 	Routes: []*httpHelper.Route{
 		{
@@ -19,7 +19,7 @@ var MeRouteGroup = httpHelper.Routes{
 			Action:     getBasket.Handle,
 		},
 		{
-			UrlPattern: "",
+			UrlPattern: "/put",
 			Method:     httpHelper.PUT_METHOD,
 			Action:     putBasket.Handle,
 		},

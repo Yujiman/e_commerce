@@ -17,7 +17,7 @@ func getRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	/* V1 */
-	httpHelper.RegisterGroupRoutes(mux, &routes.MeRouteGroup) // me/...
+	httpHelper.RegisterGroupRoutes(mux, &routes.BasketRouteGroup) // me/...
 
 	return mux
 }

@@ -38,6 +38,9 @@ func (c Client) ExistBasket(userId string) (bool, error) {
 	if ctx.Err() == context.DeadlineExceeded {
 		return false, status.Error(codes.Code(503), "Client to Gateway->Policy:ExistBasket service timeout exceeded.")
 	}
+	if err != nil {
+		return false, err
+	}
 
 	return resp.Value, err
 }
@@ -84,7 +87,7 @@ func (c Client) GetBasket(userId string) (*pb.Basket, error) {
 	return resp, err
 }
 
-func (c Client) PutItem(basketId, goodId string, quantity int64, price float64) (*string, error) {
+func (c Client) PutItem(basketId, goodId string, quantity int64, price float64) (*pb.UUID, error) {
 	clientConn, err := service.GetGrpcClientConnection(c.addr)
 	defer utils.MuteCloseClientConn(clientConn)
 	if err != nil {
@@ -105,7 +108,7 @@ func (c Client) PutItem(basketId, goodId string, quantity int64, price float64) 
 		return nil, status.Error(codes.Code(503), "Client to Gateway->Basket:GetBasket service timeout exceeded.")
 	}
 
-	return &resp.Value, err
+	return resp, err
 }
 
 func (c Client) UpdateQuantity(userId, basketItemId string, newQuantity int64) (*string, error) {

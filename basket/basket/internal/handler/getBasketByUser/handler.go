@@ -20,7 +20,7 @@ func Handle(ctx context.Context, req *pb.GetBasketByUserRequest) (*pb.Basket, er
 		return nil, err
 	}
 
-	id, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
+	id, _ := types.NewUuidType(req.UserId, false)
 
 	basketRepo := basketModel.NewRepository()
 	basket, err := basketRepo.GetByUserId(ctx, *id)
@@ -45,7 +45,7 @@ func Handle(ctx context.Context, req *pb.GetBasketByUserRequest) (*pb.Basket, er
 		}, nil
 	}
 
-	items, err := basketItem.NewBasketRepository().Find(ctx, &basketItem.FindDTO{BasketId: id}, -1, 0)
+	items, err := basketItem.NewBasketRepository().Find(ctx, &basketItem.FindDTO{BasketId: id}, 100, 0)
 	if err != nil {
 		return nil, err
 	}
