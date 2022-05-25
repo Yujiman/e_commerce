@@ -93,7 +93,7 @@ func (repo *Repository) GetById(ctx context.Context, id types.UuidType) (*Item, 
 	case nil:
 		return item, nil
 	case sql.ErrNoRows:
-		return nil, status.Error(codes.Code(409), "Item not found.")
+		return nil, status.Error(codes.Code(409), "item not found.")
 	default:
 		utils.LogPrintf("Repository GetById() error: %v", err)
 		return nil, status.Error(codes.Code(500), err.Error())

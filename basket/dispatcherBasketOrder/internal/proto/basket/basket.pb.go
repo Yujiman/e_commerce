@@ -166,7 +166,7 @@ func (x *Item) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Item.ProtoReflect.Descriptor instead.
+// Deprecated: Use item.ProtoReflect.Descriptor instead.
 func (*Item) Descriptor() ([]byte, []int) {
 	return file_internal_proto_basket_basket_proto_rawDescGZIP(), []int{1}
 }
@@ -1138,7 +1138,7 @@ func file_internal_proto_basket_basket_proto_rawDescGZIP() []byte {
 var file_internal_proto_basket_basket_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_internal_proto_basket_basket_proto_goTypes = []interface{}{
 	(*Basket)(nil),                 // 0: basket.Basket
-	(*Item)(nil),                   // 1: basket.Item
+	(*Item)(nil),                   // 1: basket.item
 	(*Items)(nil),                  // 2: basket.Items
 	(*GetBasketByUserRequest)(nil), // 3: basket.GetBasketByUserRequest
 	(*HasBasketRequest)(nil),       // 4: basket.HasBasketRequest
@@ -1155,8 +1155,8 @@ var file_internal_proto_basket_basket_proto_goTypes = []interface{}{
 	(*PaginationRequest)(nil),      // 15: basket.PaginationRequest
 }
 var file_internal_proto_basket_basket_proto_depIdxs = []int32{
-	1,  // 0: basket.Basket.items:type_name -> basket.Item
-	1,  // 1: basket.Items.items:type_name -> basket.Item
+	1,  // 0: basket.Basket.items:type_name -> basket.item
+	1,  // 1: basket.Items.items:type_name -> basket.item
 	15, // 2: basket.GetBasketRequest.pagination:type_name -> basket.PaginationRequest
 	15, // 3: basket.FindItemRequest.pagination:type_name -> basket.PaginationRequest
 	6,  // 4: basket.BasketService.Put:input_type -> basket.PutRequest

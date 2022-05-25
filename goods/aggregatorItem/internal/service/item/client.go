@@ -27,7 +27,7 @@ func GetItemsByIds(ctx context.Context, categoryId string, pag *pb.PaginationReq
 		CategoryId: categoryId,
 	})
 	if ctx.Err() == context.DeadlineExceeded {
-		return nil, status.Error(codes.Code(503), "Client to Item GetItemsByIds() service timeout exceeded.")
+		return nil, status.Error(codes.Code(503), "Client to item GetItemsByIds() service timeout exceeded.")
 	}
 
 	if err != nil {

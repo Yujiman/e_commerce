@@ -2,6 +2,7 @@ package find
 
 import (
 	"context"
+	"log"
 
 	"github.com/Yujiman/e_commerce/goods/item/internal/handler"
 
@@ -61,8 +62,9 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Items, error) {
 }
 
 func validation(req *pb.FindRequest) error {
+	log.Println(req)
 	if req.Price == 0 && req.Name == "" && req.Brand == "" &&
-		req.Description == "" && req.CategoryId != "" {
+		req.Description == "" && req.CategoryId == "" {
 		return status.Error(codes.Code(400), "one of the fields is blank.")
 	}
 

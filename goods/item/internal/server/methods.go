@@ -6,8 +6,8 @@ import (
 	"github.com/Yujiman/e_commerce/goods/item/internal/handler/add"
 	"github.com/Yujiman/e_commerce/goods/item/internal/handler/find"
 	"github.com/Yujiman/e_commerce/goods/item/internal/handler/getAll"
+	"github.com/Yujiman/e_commerce/goods/item/internal/handler/getById"
 	"github.com/Yujiman/e_commerce/goods/item/internal/handler/remove"
-
 	pb "github.com/Yujiman/e_commerce/goods/item/internal/proto/item"
 )
 
@@ -22,4 +22,8 @@ func (Server) Add(ctx context.Context, req *pb.AddRequest) (*pb.UUID, error) {
 }
 func (Server) Remove(ctx context.Context, req *pb.RemoveRequest) (*pb.UUID, error) {
 	return remove.Handle(ctx, req)
+}
+
+func (Server) GetById(ctx context.Context, req *pb.GetByIdRequest) (*pb.Item, error) {
+	return getById.Handle(ctx, req)
 }

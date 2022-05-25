@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package category;
+
+option go_package = "/;category";
+
+service CategoryService {
+    rpc Add (AddRequest) returns (UUID);
+    rpc Find (FindRequest) returns (Categorys);
+    rpc GetAll (GetAllRequest) returns (Categorys);
+    rpc Remove (RemoveRequest) returns (UUID);
+}
+
+// Entities:
+message Category {
+    string id = 1;
+    int64 created_at = 2;
+    int64 updated_at = 3;
+    string name = 4;
+    string group_id = 5;
+}
+
+message Categorys {
+    uint32 pages_count = 1;
+    uint32 total_items = 2;
+    uint32 per_page = 3;
+    repeated Category categorys = 4;
+}
+
+message AddRequest {
+    string name = 1;
+    string group_id = 2;
+}
+
+message FindRequest {
+    PaginationRequest pagination = 4;
+    string category_id = 1;
+    string name = 2;
+    string group_id = 3;
+}
+
+message GetAllRequest {
+    PaginationRequest pagination =1;
+}
+
+message RemoveRequest {
+    string category_id =1;
+}
+
+
+// Base
+message UUID {
+    string value = 1;
+}
+
+message Empty {
+}
+
+message Exist {
+    bool value = 1;
+}
+
+message PaginationRequest {
+    uint32 page = 1;
+    int32 limit = 2;
+    uint32 offset = 3;
+}

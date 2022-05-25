@@ -2,6 +2,7 @@ package find
 
 import (
 	"context"
+	"log"
 
 	pb "github.com/Yujiman/e_commerce/goods/category/internal/proto/category"
 	categoryModel "github.com/Yujiman/e_commerce/goods/category/internal/storage/db/model/category"
@@ -28,6 +29,8 @@ func Handle(ctx context.Context, request *pb.FindRequest) (*pb.Categorys, error)
 	if err != nil {
 		return nil, err
 	}
+	log.Println(dto)
+	log.Println(countAll)
 	if countAll == 0 {
 		return &pb.Categorys{}, nil
 	}

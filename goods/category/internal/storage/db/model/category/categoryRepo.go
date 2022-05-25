@@ -3,6 +3,7 @@ package category
 import (
 	"context"
 	"database/sql"
+	"log"
 	"strings"
 
 	"github.com/Yujiman/e_commerce/goods/category/internal/storage/db"
@@ -68,12 +69,26 @@ func (repo *Repository) GetCountAllForFind(ctx context.Context, dto *FindDTO) (u
 	queryBuilder := db.NewQueryBuilder("category").
 		Select("COUNT(id)")
 
-	queryBuilder = fillQueryForFind(queryBuilder, dto)
+	if dto.GroupId != nil {
+		var count uint32
+
+		query := `SELECT COUNT(*) FROM category where group_id = $1;`
+
+		err := repo.DbCon.GetContext(ctx, &count, query, dto.GroupId.String())
+		if err != nil {
+			utils.LogPrintf("Repository GetCountAll() error: %v", err)
+			return 0, status.Error(codes.Code(500), err.Error())
+		}
+
+		return count, nil
+	}
 
 	// Searching count...
 	var count uint32
 	query := queryBuilder.GetQuery(false)
+	log.Println(query, dto.GroupId)
 
+	log.Println(queryBuilder.GetParams())
 	err := repo.DbCon.GetContext(ctx, &count, query, queryBuilder.GetParams()...)
 	if err != nil {
 		utils.LogPrintf("Repository GetCountAllForFind() error: %v", err)
@@ -113,19 +128,30 @@ func (repo *Repository) HasById(ctx context.Context, id types.UuidType) (bool, e
 }
 
 func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset uint32) ([]*Category, error) {
-
 	// Prepare QUERY
 	queryBuilder := db.NewQueryBuilder("category").
 		Limit(limit).
 		Offset(offset).
 		OrderBy("created_at", "DESC")
 
-	queryBuilder = fillQueryForFind(queryBuilder, dto)
+	if dto.GroupId != nil {
+		var categorys []*Category
+
+		query := "SELECT * FROM category WHERE group_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;"
+
+		err := repo.DbCon.SelectContext(ctx, &categorys, query, dto.GroupId.String(), limit, offset)
+		switch err {
+		case nil, sql.ErrNoRows:
+			return categorys, nil
+		default:
+			utils.LogPrintf("Repository Find() error: %v", err)
+			return nil, status.Error(codes.Code(500), err.Error())
+		}
+	}
 
 	// Searching...
 	var categorys []*Category
 	query := queryBuilder.GetQuery(false)
-
 	err := repo.DbCon.SelectContext(ctx, &categorys, query, queryBuilder.GetParams()...)
 	switch err {
 	case nil, sql.ErrNoRows:
@@ -139,17 +165,17 @@ func (repo *Repository) Find(ctx context.Context, dto *FindDTO, limit, offset ui
 func fillQueryForFind(queryBuilder *db.QueryBuilder, dto *FindDTO) *db.QueryBuilder {
 	if dto.CategoryId != nil { // Equal
 		queryBuilder = queryBuilder.
-			OrWhere("category_id = :category_id").
-			SetParameter(":category_id", dto.CategoryId)
+			AndWhere("category_id = :category_id").
+			SetParameter(":category_id", dto.CategoryId.String())
 	}
 	if dto.GroupId != nil { // Equal
 		queryBuilder = queryBuilder.
-			OrWhere("group_id = :group_id").
-			SetParameter(":group_ids", dto.GroupId)
+			AndWhere("group_id = :group_id").
+			SetParameter(":group_ids", dto.GroupId.String())
 	}
 	if dto.Name != nil { // Like
 		queryBuilder = queryBuilder.
-			OrWhere("LOWER(name) LIKE :name").
+			AndWhere("LOWER(name) LIKE :name").
 			SetParameter(":name", "%"+strings.ToLower(*dto.Name)+"%")
 	}
 

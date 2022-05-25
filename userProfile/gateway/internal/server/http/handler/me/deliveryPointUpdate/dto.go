@@ -6,7 +6,7 @@ import (
 )
 
 type DTO struct {
-	UserId          string `json:"user_id"`
+	UserId          string
 	DeliveryPointId string `json:"delivery_point_id"`
 }
 

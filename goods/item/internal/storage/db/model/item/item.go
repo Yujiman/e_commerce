@@ -31,7 +31,7 @@ func (item *Item) Add(ctx context.Context, tr *db.Transaction) (err error) {
 	defer rollbackIfError(tr, &err)
 
 	if item.isRequiredEmpty() {
-		return status.Error(codes.Code(409), "Item not fill required params.")
+		return status.Error(codes.Code(409), "item not fill required params.")
 	}
 
 	// Convert time to UTC
@@ -57,7 +57,7 @@ func (item *Item) ApplyUpdatedAt(tr *db.Transaction, ctx context.Context, date t
 
 	date = date.UTC()
 	if item.UpdatedAt.After(date) {
-		return status.Error(codes.Code(409), "Item new updated_at value before old.")
+		return status.Error(codes.Code(409), "item new updated_at value before old.")
 	}
 
 	item.UpdatedAt = date

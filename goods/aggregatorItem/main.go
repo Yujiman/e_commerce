@@ -7,7 +7,6 @@ import (
 
 func init() {
 	bootstrap.InitConfig()
-	bootstrap.InitMetrics()
 }
 
 func main() {

@@ -65,7 +65,7 @@ func (x *Item) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Item.ProtoReflect.Descriptor instead.
+// Deprecated: Use item.ProtoReflect.Descriptor instead.
 func (*Item) Descriptor() ([]byte, []int) {
 	return file_internal_proto_item_item_proto_rawDescGZIP(), []int{0}
 }
@@ -680,7 +680,7 @@ func file_internal_proto_item_item_proto_rawDescGZIP() []byte {
 
 var file_internal_proto_item_item_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_internal_proto_item_item_proto_goTypes = []interface{}{
-	(*Item)(nil),              // 0: item.Item
+	(*Item)(nil),              // 0: item.item
 	(*Items)(nil),             // 1: item.Items
 	(*GetAllRequest)(nil),     // 2: item.GetAllRequest
 	(*FindRequest)(nil),       // 3: item.FindRequest
@@ -690,7 +690,7 @@ var file_internal_proto_item_item_proto_goTypes = []interface{}{
 	(*PaginationRequest)(nil), // 7: item.PaginationRequest
 }
 var file_internal_proto_item_item_proto_depIdxs = []int32{
-	0, // 0: item.Items.items:type_name -> item.Item
+	0, // 0: item.Items.items:type_name -> item.item
 	7, // 1: item.GetAllRequest.pagination:type_name -> item.PaginationRequest
 	7, // 2: item.FindRequest.pagination:type_name -> item.PaginationRequest
 	2, // 3: item.ItemService.GetAll:input_type -> item.GetAllRequest
