@@ -45,7 +45,8 @@ func Handle(ctx context.Context, req *pb.GetBasketByUserRequest) (*pb.Basket, er
 		}, nil
 	}
 
-	items, err := basketItem.NewBasketRepository().Find(ctx, &basketItem.FindDTO{BasketId: id}, 100, 0)
+	basketId, _ := types.NewUuidType(basket.Id.String(), false)
+	items, err := basketItem.NewBasketRepository().Find(ctx, &basketItem.FindDTO{BasketId: basketId}, 100, 0)
 	if err != nil {
 		return nil, err
 	}

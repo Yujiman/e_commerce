@@ -26,7 +26,7 @@ func Handle(ctx context.Context, req *pb.GetBasketRequest) (*pb.Basket, error) {
 		req.Pagination = &pb.PaginationRequest{}
 	}
 
-	id, _ := types.NewUuidType(utils.GenerateUuid().String(), false)
+	id, _ := types.NewUuidType(req.BasketId, false)
 
 	p := req.Pagination.Page
 	limit := req.Pagination.Limit
